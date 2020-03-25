@@ -10,12 +10,16 @@ const user = {
     welcome: '',
     avatar: '',
     roles: [],
-    info: {}
+    info: {},
+    userId: ''
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
+    },
+    SET_USERID: (state, userId) => {
+      state.userId = userId
     },
     SET_NAME: (state, { name, welcome }) => {
       state.name = name
@@ -37,9 +41,12 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
+          console.log(response)
           const result = response.result
-          Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.token)
+          Vue.ls.set(ACCESS_TOKEN, response.message, 7 * 24 * 60 * 60 * 1000)
+          commit('SET_TOKEN', response.message)
+          commit('SET_USERID', result.id)
+          localStorage.setItem('SET_USERID', result.id)
           resolve()
         }).catch(error => {
           reject(error)
@@ -48,31 +55,49 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo ({ commit }) {
+    GetInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo().then(response => {
+        getInfo({
+          id: localStorage.getItem('SET_USERID')
+        }).then(response => {
+          console.log(response)
           const result = response.result
 
-          if (result.role && result.role.permissions.length > 0) {
-            const role = result.role
-            role.permissions = result.role.permissions
-            role.permissions.map(per => {
-              if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-                const action = per.actionEntitySet.map(action => { return action.action })
-                per.actionList = action
+          // if (result.role && result.role.permissions.length > 0) {
+          //   const role = result.role
+          //   role.permissions = result.role.permissions
+          //   role.permissions.map(per => {
+          //     if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
+          //       const action = per.actionEntitySet.map(action => { return action.action })
+          //       per.actionList = action
+          //     }
+          //   })
+          //   role.permissionList = role.permissions.map(permission => { return permission.permissionId })
+          //   console.log(111, result.role)
+          //   console.log(222, result)
+          //   commit('SET_ROLES', result.role)
+          //   commit('SET_INFO', result)
+          // } else {
+          //   reject(new Error('getInfo: roles must be a non-null array !'))
+          // }
+          result.roleId = 1
+          result.role = {
+            id: 'admin',
+            name: '管理员',
+            permissions: [
+              {
+                roleId: 'admin',
+                permissionId: 'dashboard',
+                permissionName: '仪表盘'
               }
-            })
-            role.permissionList = role.permissions.map(permission => { return permission.permissionId })
-            commit('SET_ROLES', result.role)
-            commit('SET_INFO', result)
-          } else {
-            reject(new Error('getInfo: roles must be a non-null array !'))
+            ],
+            permissionList: ['dashboard']
           }
-
+          commit('SET_INFO', result)
+          commit('SET_ROLES', result.role)
           commit('SET_NAME', { name: result.name, welcome: welcome() })
-          commit('SET_AVATAR', result.avatar)
-
-          resolve(response)
+          // commit('SET_AVATAR', result.avatar)
+          resolve({ result })
         }).catch(error => {
           reject(error)
         })
