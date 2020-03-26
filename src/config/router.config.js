@@ -62,7 +62,7 @@ export const asyncRouterMap = [
                         path: '/huiyuan/reply',
                         name: 'reply',
                         component: () =>
-                            import('@/views/list/TableList'),
+                            import('@/views/huiyuan/replayManage'),
                         meta: { title: '反馈管理', keepAlive: true, permission: ['dashboard'] }
                     }
                 ]
