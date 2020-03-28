@@ -73,12 +73,14 @@ export const asyncRouterMap = [
                 name: 'weixin',
                 redirect: '/weixin/index',
                 component: RouteView,
-                meta: { title: '公众号', keepAlive: true, icon: 'wechat', permission: ['MEMBER'] },
+                meta: { title: '公众号', keepAlive: true, icon: 'wechat', permission: ['WECHAT'] },
                 children: [
                     {
-                        path: 'https://mp.weixin.qq.com/',
+                        path: '/index',
                         name: 'weixin',
-                        meta: { title: '图文管理', target: '_blank', permission: ['MEMBER'] }
+                        component: () =>
+                            import('@/views/weixin/index'),
+                        meta: { title: '图文管理', keepAlive: true, permission: ['WECHAT:NEWS'] }
                     }
                 ]
             },
