@@ -71,3 +71,25 @@ export function replyDelete (parameter) {
     data: parameter
   })
 }
+
+export function getAuthList (parameter) {
+  return axios({
+    url: '/member/queryAuth',
+    method: 'post',
+    data: parameter
+  })
+}
+export function deleteAuth (parameter) {
+  return axios({
+    url: '/member/deleteAuth',
+    method: 'post',
+    data: parameter
+  })
+}
+export function doAuth (parameter) {
+  return axios({
+    url: '/member/processAuth',
+    method: 'post',
+    data: parameter
+  })
+}

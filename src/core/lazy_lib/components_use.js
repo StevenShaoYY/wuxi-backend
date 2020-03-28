@@ -46,11 +46,13 @@ import {
   Skeleton,
   Popconfirm,
   message,
-  notification
+  notification,
+  descriptions
 } from 'ant-design-vue'
 // import VueCropper from 'vue-cropper'
 
 Vue.use(ConfigProvider)
+Vue.use(descriptions)
 Vue.use(Layout)
 Vue.use(Input)
 Vue.use(InputNumber)

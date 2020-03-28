@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title"
-    :width="840"
+    :width="1000"
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
@@ -11,165 +11,176 @@
       <a-form :form="form">
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
-            label="姓名"
+            label="企业工商登记名称"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入姓名"
-              v-decorator="['name', {rules: [{required: true, message: '请输入姓名！'}]}]" />
+              placeholder="请输入企业工商登记名称"
+              v-decorator="['companyName', {rules: [{required: true, message: '请输入企业工商登记名称！'}]}]" />
           </a-form-item></a-col>
           <a-col :span="12"><a-form-item
-            label="身份证号码"
+            label="统一社会信用代码"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入身份证号码"
-              v-decorator="['certificateNumber', {rules: [
-                {required: true, message: '请输入身份证号码！'},
+              placeholder="请输入统一社会信用代码"
+              v-decorator="['companyCreditCode', {rules: [
+                {required: true, message: '请输入统一社会信用代码！'}
+              ]}]" />
+          </a-form-item></a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="24"><a-form-item
+            label="单位地址"
+            :labelCol="labelCol2"
+            :wrapperCol="wrapperCol2"
+          >
+            <a-input
+              placeholder="请输入单位地址"
+              :rows="3"
+              v-decorator="['companyAddress', {rules: [{required: true, message: '请输入单位地址！'}]}]" />
+          </a-form-item></a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="12"><a-form-item
+            label="法定代表人"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          >
+            <a-input
+              placeholder="请输入法定代表人"
+              v-decorator="['companyLegalPerson', {rules: [{required: true, message: '请输入法定代表人！'}]}]" />
+          </a-form-item></a-col>
+          <a-col :span="12"><a-form-item
+            label="联系电话"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          >
+            <a-input
+              placeholder="请输入法人联系电话"
+              v-decorator="['companyLegalPersonPhone', {rules: [{required: true, message: '请输入法人联系电话！'},
+                                                                {validator:phoneCheck}]}]" />
+          </a-form-item></a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="24"><a-form-item
+            label="法定代表人身份证号码"
+            :labelCol="labelCol2"
+            :wrapperCol="wrapperCol2"
+          >
+            <a-input
+              placeholder="请输入法人身份证号码"
+              :rows="3"
+              v-decorator="['companyLegalPersonCertificateNumber', {rules: [
+                {required: true, message: '请输入法人身份证号码！'},
                 {validator:IDCardCheck}
               ]}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
-            label="手机号码"
+            label="经办人"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入手机号码"
-              v-decorator="['phoneNumber', {rules: [{required: true, message: '请输入手机号码！'},
-                                                    {validator:phoneCheck}]}]" />
+              placeholder="请输入经办人"
+              v-decorator="['companyChargelPerson', {rules: [{required: true, message: '请输入经办人！'}]}]" />
           </a-form-item></a-col>
           <a-col :span="12"><a-form-item
-            label="联系地址"
+            label="联系电话"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入联系地址"
-              v-decorator="['address', {rules: [{required: true, message: '请输入联系地址！'}]}]" />
+              placeholder="请输入经办人联系电话"
+              v-decorator="['companyChargelPersonPhone', {rules: [{required: true, message: '请输入经办人联系电话！'},
+                                                                  {validator:phoneCheck}]}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
-            label="性别"
+            label="经营/业务范围"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-radio-group v-decorator="['gender',{initialValue:'1'}]">
-              <a-radio value="1">男</a-radio>
-              <a-radio value="2">女</a-radio>
-            </a-radio-group>
+            <a-input
+              placeholder="请输入经营/业务范围"
+              v-decorator="['businessScope',{initialValue:''}]" />
           </a-form-item></a-col>
           <a-col :span="12"><a-form-item
-            label="民族"
+            label="注册资金"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select
-              v-decorator="[
-                'nation',{initialValue:1}]"
-              placeholder="请选择民族"
-            >
-              <a-select-option v-for="(item, index) of nationList" :key="index" :value="item.value">
-                {{ item.name }}
-              </a-select-option>
-            </a-select>
+            <a-input
+              placeholder="请输入注册资金"
+              v-decorator="['registeredCapital',{initialValue:''}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
-            label="籍贯"
+            label="单位性质"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入籍贯"
-              v-decorator="['areaName',{initialValue:''}]" />
+              placeholder="请输入单位性质"
+              v-decorator="['companyProperty',{initialValue:''}]" />
           </a-form-item></a-col>
           <a-col :span="12"><a-form-item
-            label="政治面貌"
+            label="注册类型"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入政治面貌"
-              v-decorator="['politicalFace',{initialValue:''}]" />
+              placeholder="请输入注册类型"
+              v-decorator="['registeredType',{initialValue:''}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
-            label="毕业学校"
+            label="行业分类"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入毕业学校"
-              v-decorator="['school',{initialValue:''}]" />
+              placeholder="请输入行业分类"
+              v-decorator="['industryClass',{initialValue:''}]" />
           </a-form-item></a-col>
           <a-col :span="12"><a-form-item
-            label="学历"
+            label="年营业额"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select
-              v-decorator="[
-                'educationRecord',{initialValue:1}]"
-              placeholder="请选择学历"
-            >
-              <a-select-option v-for="(item, index) of xueLi" :key="index" :value="item.value">
-                {{ item.name }}
-              </a-select-option>
-            </a-select>
+            <a-input
+              placeholder="请输入年营业额"
+              v-decorator="['annualSale',{initialValue:''}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
-            label="学位"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
-            <a-select
-              v-decorator="[
-                'academicDegree',{initialValue:1}]"
-              placeholder="请选择学位"
-            >
-              <a-select-option v-for="(item, index) of xueWei" :key="index" :value="item.value">
-                {{ item.name }}
-              </a-select-option>
-            </a-select>
-          </a-form-item></a-col>
-          <a-col :span="12"><a-form-item
-            label="单位名称"
+            label="职工总数"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
             <a-input
-              placeholder="请输入单位名称"
-              v-decorator="['companyName',{initialValue:''}]" />
+              placeholder="请输入职工总数"
+              v-decorator="['totalStaff',{initialValue:''}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
-          <a-col :span="12"><a-form-item
-            label="职务"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
+          <a-col :span="24"><a-form-item
+            label="邮箱"
+            :labelCol="labelCol2"
+            :wrapperCol="wrapperCol2"
           >
             <a-input
-              placeholder="请输入职务"
-              v-decorator="['companyDuty',{initialValue:''}]" />
-          </a-form-item></a-col>
-          <a-col :span="12"><a-form-item
-            label="职称"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          >
-            <a-input
-              placeholder="请输入职称"
-              v-decorator="['companyGradle',{initialValue:''}]" />
+              placeholder="请输入邮箱"
+              :rows="3"
+              v-decorator="['email',{initialValue:''}]" />
           </a-form-item></a-col>
         </a-row>
         <div class="line"></div>
@@ -183,20 +194,6 @@
               placeholder="请输入发票号码"
               v-decorator="['invoiceNumber',{initialValue:''}]" />
           </a-form-item></a-col>
-          <a-col :span="12"><a-form-item
-            label="会员分类"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-          > <a-select
-            v-decorator="[
-              'vipType',{initialValue:1}]"
-            placeholder="请选择会员类型"
-          >
-            <a-select-option v-for="(item, index) of vipType2" :key="index" :value="item.value">
-              {{ item.name }}
-            </a-select-option>
-          </a-select>
-          </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="24"><a-form-item
@@ -207,7 +204,7 @@
             <a-textarea
               placeholder="请输入备注"
               :rows="3"
-              v-decorator="['remark']" />
+              v-decorator="['remark',{initialValue:''}]" />
           </a-form-item></a-col>
         </a-row>
       </a-form>
@@ -245,7 +242,8 @@ export default {
       vipType2: [],
       form: this.$form.createForm(this),
       title: '新增会员',
-      tId: ''
+      tId: '',
+      cId: ''
     }
   },
   created () {
@@ -266,34 +264,34 @@ export default {
       }
     },
     checkIDCard (idcode) {
-    // 加权因子
-    var weightFactor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
-    // 校验码
-    var checkCode = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']
+      // 加权因子
+      var weightFactor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
+      // 校验码
+      var checkCode = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']
 
-    var code = idcode + ''
-    var last = idcode[17]// 最后一位
+      var code = idcode + ''
+      var last = idcode[17]// 最后一位
 
-    var seventeen = code.substring(0, 17)
+      var seventeen = code.substring(0, 17)
 
-    // ISO 7064:1983.MOD 11-2
-    // 判断最后一位校验码是否正确
-    var arr = seventeen.split('')
-    var len = arr.length
-    var num = 0
-    for (var i = 0; i < len; i++) {
-        num = num + arr[i] * weightFactor[i]
-    }
+      // ISO 7064:1983.MOD 11-2
+      // 判断最后一位校验码是否正确
+      var arr = seventeen.split('')
+      var len = arr.length
+      var num = 0
+      for (var i = 0; i < len; i++) {
+          num = num + arr[i] * weightFactor[i]
+      }
 
-    // 获取余数
-    var resisue = num % 11
-    var lastNo = checkCode[resisue]
-    var idcardPatter = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
+      // 获取余数
+      var resisue = num % 11
+      var lastNo = checkCode[resisue]
+      var idcardPatter = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
 
-    // 判断格式是否正确
-    var format = idcardPatter.test(idcode)
+      // 判断格式是否正确
+      var format = idcardPatter.test(idcode)
 
-    // 返回验证结果，校验码和格式同时正确才算是合法的身份证号码
+      // 返回验证结果，校验码和格式同时正确才算是合法的身份证号码
       return !!(last === lastNo && format)
     },
     phoneCheck (rule, value, callbackFn) {
@@ -312,21 +310,25 @@ export default {
       this.visible = true
       this.title = '编辑会员'
       this.tId = val.id
+      this.cId = val.companyId
       setTimeout(() => {
         this.form.setFieldsValue({
-          name: val.authInfo.name,
-          certificateNumber: val.authInfo.certificateNumber,
-          phoneNumber: val.authInfo.phoneNumber,
-          address: val.authInfo.address,
-          gender: val.authInfo.gender,
-          nation: parseInt(val.authInfo.nation),
-          areaName: val.authInfo.areaName,
-          politicalFace: val.authInfo.politicalFace,
-          school: val.authInfo.school,
-          educationRecord: parseInt(val.authInfo.educationRecord),
-          academicDegree: parseInt(val.authInfo.academicDegree),
           companyName: val.authInfo.companyName,
-          companyDuty: val.authInfo.companyDuty,
+          companyCreditCode: val.authInfo.companyCreditCode,
+          companyAddress: val.authInfo.companyAddress,
+          companyLegalPerson: val.authInfo.companyLegalPerson,
+          companyLegalPersonPhone: val.authInfo.companyLegalPersonPhone,
+          companyChargelPerson: val.authInfo.companyChargelPerson,
+          companyChargelPersonPhone: val.authInfo.companyChargelPersonPhone,
+          companyLegalPersonCertificateNumber: val.authInfo.companyLegalPersonCertificateNumber,
+          businessScope: val.authInfo.businessScope,
+          registeredCapital: val.authInfo.registeredCapital,
+          registeredType: val.authInfo.registeredType,
+          companyProperty: val.authInfo.companyProperty,
+          industryClass: val.authInfo.industryClass,
+          annualSale: val.authInfo.annualSale,
+          totalStaff: val.authInfo.totalStaff,
+          email: val.authInfo.email,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
           remark: val.remark
@@ -339,12 +341,14 @@ export default {
       validateFields((errors, values) => {
         if (!errors) {
           if (this.title === '新增会员') {
+            const invoiceNumber = values.invoiceNumber
+            delete values.invoiceNumber
             addHuiyuan({
               authInfo: values,
-              invoiceNumber: values.invoiceNumber,
+              invoiceNumber: invoiceNumber,
               remark: values.remark,
-              type: 1,
-              vipType: values.vipType
+              type: 2,
+              vipType: 3
             }).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -358,13 +362,16 @@ export default {
               }
             })
           } else {
+            const invoiceNumber = values.invoiceNumber
+            delete values.invoiceNumber
             updateHuiyuan({
               authInfo: values,
-              invoiceNumber: values.invoiceNumber,
-              type: 1,
+              invoiceNumber: invoiceNumber,
+              type: 2,
               id: this.tId,
               remark: values.remark,
-              vipType: values.vipType
+              vipType: 3,
+              companyId: this.cId
             }).then(res => {
               if (res.code === '200') {
                 this.visible = false

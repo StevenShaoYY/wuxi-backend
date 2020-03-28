@@ -48,14 +48,14 @@ export const asyncRouterMap = [
                         path: '/huiyuan/company',
                         name: 'company',
                         component: () =>
-                            import('@/views/list/TableList'),
+                            import('@/views/companyHuiyuan/single'),
                         meta: { title: '单位会员', keepAlive: true, permission: ['dashboard'] }
                     },
                     {
                         path: '/huiyuan/Authentication',
                         name: 'Authentication',
                         component: () =>
-                            import('@/views/list/TableList'),
+                            import('@/views/huiyuanCf/single'),
                         meta: { title: '认证管理', keepAlive: true, permission: ['dashboard'] }
                     },
                     {
