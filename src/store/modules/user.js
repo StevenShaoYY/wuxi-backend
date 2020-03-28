@@ -60,41 +60,34 @@ const user = {
         getInfo({
           id: localStorage.getItem('SET_USERID')
         }).then(response => {
-          console.log(response)
           const result = response.result
-
-          // if (result.role && result.role.permissions.length > 0) {
-          //   const role = result.role
-          //   role.permissions = result.role.permissions
-          //   role.permissions.map(per => {
-          //     if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-          //       const action = per.actionEntitySet.map(action => { return action.action })
-          //       per.actionList = action
-          //     }
-          //   })
-          //   role.permissionList = role.permissions.map(permission => { return permission.permissionId })
-          //   console.log(111, result.role)
-          //   console.log(222, result)
-          //   commit('SET_ROLES', result.role)
-          //   commit('SET_INFO', result)
-          // } else {
-          //   reject(new Error('getInfo: roles must be a non-null array !'))
-          // }
-          result.roleId = 1
-          result.role = {
-            id: 'admin',
-            name: '管理员',
-            permissions: [
-              {
-                roleId: 'admin',
-                permissionId: 'dashboard',
-                permissionName: '仪表盘'
-              }
-            ],
-            permissionList: ['dashboard']
+          console.log(222222, result)
+          if (result.modulesName && result.modulesName.length > 0) {
+            const role = {}
+            role.name = result.name
+            role.id = result.id
+            role.permissionList = result.modulesName
+            result.role = role
+            commit('SET_ROLES', role)
+            commit('SET_INFO', result)
+          } else {
+            reject(new Error('getInfo: roles must be a non-null array !'))
           }
-          commit('SET_INFO', result)
-          commit('SET_ROLES', result.role)
+          // result.roleId = 1
+          // result.role = {
+          //   id: 'admin',
+          //   name: '管理员',
+          //   permissions: [
+          //     {
+          //       roleId: 'admin',
+          //       permissionId: 'dashboard',
+          //       permissionName: '仪表盘'
+          //     }
+          //   ],
+          //   permissionList: ['dashboard']
+          // }
+          // commit('SET_INFO', result)
+          // commit('SET_ROLES', result.role)
           commit('SET_NAME', { name: result.name, welcome: welcome() })
           // commit('SET_AVATAR', result.avatar)
           resolve({ result })

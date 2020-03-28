@@ -2,7 +2,7 @@
   <div class="logo">
     <router-link :to="{name:'dashboard'}">
       <LogoSvg alt="logo" />
-      <h1 v-if="showTitle">{{ title }}</h1>
+      <h1 class="title-main" v-if="showTitle">{{ title }}</h1>
     </router-link>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Ant Design Pro',
+      default: '无锡市道路交通协会管理系统',
       required: false
     },
     showTitle: {
@@ -29,3 +29,8 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.title-main {
+  font-size: 13.5px !important;
+}
+</style>
