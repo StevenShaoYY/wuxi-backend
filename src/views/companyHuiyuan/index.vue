@@ -3,8 +3,34 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="20" :sm="24">
-            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
+          <a-col :md="6" :sm="24">
+            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px;" @search="onSearch"/>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-row>
+              <a-col :md="8" :sm="6">
+                <span style="float:right;margin-top:5px;margin-right:15px;">开通日期</span>
+              </a-col>
+              <a-col :md="16" :sm="18">
+                <a-range-picker
+                  format="YYYY-MM-DD"
+                  @change="onChangeStart"
+                />
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-row>
+              <a-col :md="8" :sm="6">
+                <span style="float:right;margin-top:5px;margin-right:15px;">到期日期</span>
+              </a-col>
+              <a-col :md="16" :sm="18">
+                <a-range-picker
+                  format="YYYY-MM-DD"
+                  @change="onChangeEnd"
+                />
+              </a-col>
+            </a-row>
           </a-col>
           <a-col :md="4" :sm="24">
             <a-button type="primary" icon="plus" @click="$refs.createModal.add()">添加会员</a-button>
@@ -17,11 +43,14 @@
       ref="table"
       style="margin-top:10px;"
       size="default"
-      rowKey="key"
+      rowKey="serialNumber"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
     >
+      <span slot="id" slot-scope="text, record">
+        <span style="cursor: pointer;color:blue" @click="showDetail(record)">{{ text }}</span>
+      </span>
       <span slot="status" slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
@@ -91,12 +120,15 @@ export default {
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
-      queryParam: '',
+      queryParam: {
+        type: 2
+      },
       // 表头
       columns: [
         {
           title: '会员编号',
-          dataIndex: 'serialNumber'
+          dataIndex: 'serialNumber',
+          scopedSlots: { customRender: 'id' }
         },
         {
           title: '单位名称',
@@ -143,14 +175,11 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: (parameter, filters) => {
-        console.log('loadData.filters', filters)
-        // return getSingle(Object.assign(parameter, this.queryParam))
-        return getSingle({
+        const page = {
           currentPage: parameter.pageNo,
-          pageSize: parameter.pageSize,
-          queryKey: this.queryParam,
-          type: 2
-        }).then(res => {
+          pageSize: parameter.pageSize
+        }
+        return getSingle(Object.assign(page, this.queryParam)).then(res => {
             return res.result
           })
       },
@@ -172,9 +201,21 @@ export default {
   created () {
   },
   methods: {
+    showDetail (val) {
+      this.$refs.createModal.showDetail(val)
+    },
     onSearch (val) {
-      console.log(val)
-      this.queryParam = val
+      this.queryParam.queryKey = val
+      this.$refs.table.refresh(true)
+    },
+    onChangeStart (val, dateString) {
+      this.queryParam.authTimeStart = dateString[0]
+      this.queryParam.authTimeEnd = dateString[1]
+      this.$refs.table.refresh(true)
+    },
+    onChangeEnd (val, dateString) {
+      this.queryParam.expiredTimeStart = dateString[0]
+      this.queryParam.expiredTimeEnd = dateString[1]
       this.$refs.table.refresh(true)
     },
     handleEdit (record) {

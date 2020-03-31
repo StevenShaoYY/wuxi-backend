@@ -211,6 +211,21 @@
               :disabled="disable"
               v-decorator="['invoiceNumber',{initialValue:''}]" />
           </a-form-item></a-col>
+          <a-col :span="12"><a-form-item
+            label="会员分类"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          > <a-select
+            :disabled="disable"
+            v-decorator="[
+              'vipType',{initialValue:1}]"
+            placeholder="请选择会员类型"
+          >
+            <a-select-option v-for="(item, index) of vipType2" :key="index" :value="item.value">
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
+          </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="24"><a-form-item
@@ -230,7 +245,7 @@
     <template slot="footer" >
       <a-button key="back" v-if="!disable" @click="handleCancel">取消</a-button>
       <a-button key="submit" v-if="!disable" type="primary" :loading="confirmLoading" @click="handleSubmit">
-        确定
+        认证成功
       </a-button>
       <div v-if="disable"></div>
     </template>
@@ -238,7 +253,7 @@
 </template>
 
 <script>
-import { getBase, addHuiyuan, updateHuiyuan } from '@/api/huiyuan'
+import { getBase, doAuth } from '@/api/huiyuan'
 export default {
   data () {
     return {
@@ -328,13 +343,9 @@ export default {
           callbackFn()
       }
     },
-    add () {
-      this.visible = true
-      this.title = '新增会员'
-    },
     showDetail (val) {
       this.visible = true
-      this.title = '查看会员'
+      this.title = '查看认证'
       this.disable = true
       setTimeout(() => {
         this.form.setFieldsValue({
@@ -356,13 +367,14 @@ export default {
           email: val.authInfo.email,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
-          remark: val.remark
+          remark: val.remark,
+          vipType: val.vipType
         })
       }, 100)
     },
     update (val) {
       this.visible = true
-      this.title = '编辑会员'
+      this.title = '认证会员'
       this.tId = val.id
       this.cId = val.companyId
       setTimeout(() => {
@@ -385,7 +397,8 @@ export default {
           email: val.authInfo.email,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
-          remark: val.remark
+          remark: val.remark,
+          vipType: val.vipType
         })
       }, 100)
     },
@@ -394,51 +407,29 @@ export default {
       this.confirmLoading = true
       validateFields((errors, values) => {
         if (!errors) {
-          if (this.title === '新增会员') {
-            const invoiceNumber = values.invoiceNumber
-            delete values.invoiceNumber
-            addHuiyuan({
-              authInfo: values,
-              invoiceNumber: invoiceNumber,
-              remark: values.remark,
-              type: 2,
-              vipType: 3
-            }).then(res => {
-              if (res.code === '200') {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.success('新增成功')
-                this.form.resetFields()
-                this.$emit('ok', values)
-              } else {
-                this.confirmLoading = false
-                this.$message.error('新增失败！' + res.message)
-              }
-            })
-          } else {
-            const invoiceNumber = values.invoiceNumber
-            delete values.invoiceNumber
-            updateHuiyuan({
-              authInfo: values,
-              invoiceNumber: invoiceNumber,
-              type: 2,
-              id: this.tId,
-              remark: values.remark,
-              vipType: 3,
-              companyId: this.cId
-            }).then(res => {
-              if (res.code === '200') {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.success('编辑成功')
-                this.form.resetFields()
-                this.$emit('ok', values)
-              } else {
-                this.confirmLoading = false
-                this.$message.error('编辑失败！' + res.message)
-              }
-            })
-          }
+          const invoiceNumber = values.invoiceNumber
+          delete values.invoiceNumber
+          const vipType1 = values.vipType
+          delete values.vipType
+          doAuth({
+            authInfo: values,
+            invoiceNumber: invoiceNumber,
+            authType: 2,
+            id: this.tId,
+            remark: values.remark,
+            vipType: vipType1
+          }).then(res => {
+            if (res.code === '200') {
+              this.visible = false
+              this.confirmLoading = false
+              this.$message.success('认证成功')
+              this.form.resetFields()
+              this.$emit('ok', values)
+            } else {
+              this.confirmLoading = false
+              this.$message.error('认证失败！' + res.message)
+            }
+          })
         } else {
           this.confirmLoading = false
         }

@@ -162,5 +162,6 @@ export default {
 <style lang="less" scoped>
   .line{
     border-top: 1px solid #E8E8E8;
+    margin-bottom: 25px;
   }
 </style>

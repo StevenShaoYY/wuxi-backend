@@ -93,3 +93,11 @@ export function doAuth (parameter) {
     data: parameter
   })
 }
+
+export function returnFund (parameter) {
+  return axios({
+    url: '/member/refundAuth',
+    method: 'post',
+    data: parameter
+  })
+}

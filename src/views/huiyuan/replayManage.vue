@@ -17,7 +17,7 @@
       ref="table"
       style="margin-top:10px;"
       size="default"
-      rowKey="key"
+      rowKey="serialNumber"
       :columns="columns"
       :data="loadData"
       showPagination="auto"

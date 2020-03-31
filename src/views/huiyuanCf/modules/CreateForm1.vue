@@ -233,7 +233,7 @@
     <template slot="footer" >
       <a-button key="back" v-if="!disable" @click="handleCancel">取消</a-button>
       <a-button key="submit" v-if="!disable" type="primary" :loading="confirmLoading" @click="handleSubmit">
-        确定
+        认证成功
       </a-button>
       <div v-if="disable"></div>
     </template>
@@ -241,7 +241,7 @@
 </template>
 
 <script>
-import { getBase, addHuiyuan, updateHuiyuan } from '@/api/huiyuan'
+import { getBase, doAuth } from '@/api/huiyuan'
 export default {
   data () {
     return {
@@ -292,34 +292,34 @@ export default {
       }
     },
     checkIDCard (idcode) {
-    // 加权因子
-    var weightFactor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
-    // 校验码
-    var checkCode = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']
+      // 加权因子
+      var weightFactor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
+      // 校验码
+      var checkCode = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']
 
-    var code = idcode + ''
-    var last = idcode[17]// 最后一位
+      var code = idcode + ''
+      var last = idcode[17]// 最后一位
 
-    var seventeen = code.substring(0, 17)
+      var seventeen = code.substring(0, 17)
 
-    // ISO 7064:1983.MOD 11-2
-    // 判断最后一位校验码是否正确
-    var arr = seventeen.split('')
-    var len = arr.length
-    var num = 0
-    for (var i = 0; i < len; i++) {
-        num = num + arr[i] * weightFactor[i]
-    }
+      // ISO 7064:1983.MOD 11-2
+      // 判断最后一位校验码是否正确
+      var arr = seventeen.split('')
+      var len = arr.length
+      var num = 0
+      for (var i = 0; i < len; i++) {
+          num = num + arr[i] * weightFactor[i]
+      }
 
-    // 获取余数
-    var resisue = num % 11
-    var lastNo = checkCode[resisue]
-    var idcardPatter = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
+      // 获取余数
+      var resisue = num % 11
+      var lastNo = checkCode[resisue]
+      var idcardPatter = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
 
-    // 判断格式是否正确
-    var format = idcardPatter.test(idcode)
+      // 判断格式是否正确
+      var format = idcardPatter.test(idcode)
 
-    // 返回验证结果，校验码和格式同时正确才算是合法的身份证号码
+      // 返回验证结果，校验码和格式同时正确才算是合法的身份证号码
       return !!(last === lastNo && format)
     },
     phoneCheck (rule, value, callbackFn) {
@@ -332,7 +332,7 @@ export default {
     },
     showDetail (val) {
       this.visible = true
-      this.title = '查看会员'
+      this.title = '查看认证'
       this.disable = true
       setTimeout(() => {
         this.form.setFieldsValue({
@@ -351,18 +351,16 @@ export default {
           companyDuty: val.authInfo.companyDuty,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
-          remark: val.remark
+          remark: val.remark,
+          vipType: val.vipType
         })
       }, 100)
     },
-    add () {
-      this.visible = true
-      this.title = '新增会员'
-    },
     update (val) {
       this.visible = true
-      this.title = '编辑会员'
+      this.title = '认证会员'
       this.tId = val.id
+      console.log(val)
       setTimeout(() => {
         this.form.setFieldsValue({
           name: val.authInfo.name,
@@ -380,7 +378,8 @@ export default {
           companyDuty: val.authInfo.companyDuty,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
-          remark: val.remark
+          remark: val.remark,
+          vipType: val.vipType
         })
       }, 100)
     },
@@ -389,46 +388,31 @@ export default {
       this.confirmLoading = true
       validateFields((errors, values) => {
         if (!errors) {
-          if (this.title === '新增会员') {
-            addHuiyuan({
+            const invoiceNumber = values.invoiceNumber
+            delete values.invoiceNumber
+            const vipType1 = values.vipType
+            delete values.vipType
+            const remark = values.remark
+            delete values.remark
+            doAuth({
               authInfo: values,
-              invoiceNumber: values.invoiceNumber,
-              remark: values.remark,
-              type: 1,
-              vipType: values.vipType
-            }).then(res => {
-              if (res.code === '200') {
-                this.visible = false
-                this.confirmLoading = false
-                this.$message.success('新增成功')
-                this.form.resetFields()
-                this.$emit('ok', values)
-              } else {
-                this.confirmLoading = false
-                this.$message.error('新增失败！' + res.message)
-              }
-            })
-          } else {
-            updateHuiyuan({
-              authInfo: values,
-              invoiceNumber: values.invoiceNumber,
-              type: 1,
+              invoiceNumber: invoiceNumber,
+              authType: 1,
               id: this.tId,
-              remark: values.remark,
-              vipType: values.vipType
+              remark: remark,
+              vipType: vipType1
             }).then(res => {
               if (res.code === '200') {
                 this.visible = false
                 this.confirmLoading = false
-                this.$message.success('编辑成功')
+                this.$message.success('认证成功')
                 this.form.resetFields()
                 this.$emit('ok', values)
               } else {
                 this.confirmLoading = false
-                this.$message.error('编辑失败！' + res.message)
+                this.$message.error('认证失败！' + res.message)
               }
             })
-          }
         } else {
           this.confirmLoading = false
         }
