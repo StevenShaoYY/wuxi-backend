@@ -411,12 +411,14 @@ export default {
           delete values.invoiceNumber
           const vipType1 = values.vipType
           delete values.vipType
+            const remark = values.remark
+            delete values.remark
           doAuth({
             authInfo: values,
             invoiceNumber: invoiceNumber,
             authType: 2,
             id: this.tId,
-            remark: values.remark,
+            remark: remark,
             vipType: vipType1
           }).then(res => {
             if (res.code === '200') {
