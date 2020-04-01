@@ -3,10 +3,8 @@
     <div class="container">
       <div class="top">
         <div class="header">
-          <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">无锡市道路交通协会后台管理系统</span>
-          </a>
+          <img src="~@/assets/logo.svg" class="logo" alt="logo">
+          <span class="title">无锡市道路交通协会后台管理系统</span>
         </div>
         <div class="desc">
           <!-- Ant Design 是西湖区最具影响力的 Web 设计规范 -->

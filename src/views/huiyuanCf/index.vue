@@ -3,36 +3,21 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
-            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px;" @search="onSearch"/>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-row>
-              <a-col :md="8" :sm="6">
-                <span style="float:right;margin-top:5px;margin-right:15px;">认证状态</span>
-              </a-col>
-              <a-col :md="16" :sm="18">
-                <a-select defaultValue="" style="width: 120px" @change="handleChange">
-                  <a-select-option value="">全部</a-select-option>
-                  <a-select-option value="2">已支付</a-select-option>
-                  <a-select-option value="6">已审核</a-select-option>
-                  <a-select-option value="7">已退款</a-select-option>
-                </a-select>
-              </a-col>
-            </a-row>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-row>
-              <a-col :md="8" :sm="6">
-                <span style="float:right;margin-top:5px;margin-right:15px;">提交日期</span>
-              </a-col>
-              <a-col :md="16" :sm="18">
-                <a-range-picker
-                  format="YYYY-MM-DD"
-                  @change="onChangeStart"
-                />
-              </a-col>
-            </a-row>
+          <a-col :md="24" :sm="24">
+            <a-input-search placeholder="搜索编号、姓名、手机号码" style="float:left;width:250px;margin-left: 16px;" @search="onSearch"/>
+            <span style="float:left;margin-top:5px;margin-left: 16px;">认证状态</span>
+            <a-select defaultValue="2" style="float:left;width:120px;margin-left:15px;" @change="handleChange">
+              <a-select-option value="">全部</a-select-option>
+              <a-select-option value="2">已支付</a-select-option>
+              <a-select-option value="6">已审核</a-select-option>
+              <a-select-option value="7">已退款</a-select-option>
+            </a-select>
+            <span style="float:left;margin-top:5px;margin-left: 16px;">提交日期</span>
+            <a-range-picker
+              format="YYYY-MM-DD"
+              style="float:left;width:200px;margin-left:15px;"
+              @change="onChangeStart"
+            />
           </a-col>
         </a-row>
       </a-form>
@@ -40,7 +25,7 @@
 
     <s-table
       ref="table"
-      style="margin-top:10px;"
+      style="margin-top:20px;"
       size="default"
       rowKey="serialNumber"
       :columns="columns"
@@ -61,8 +46,8 @@
           <a v-if="record.authStatus==2" @click="handleEdit(record)">认证</a>
           <a-divider v-if="record.authStatus==2" type="vertical" />
           <a v-if="record.authStatus==2 || record.authStatus==6" @click="handleReturn(record)">退款</a>
-          <a-divider v-if="record.authStatus==2 || record.authStatus==6" type="vertical" />
-          <a @click="deleteUser(record)">删除</a>
+          <a-divider v-if="record.authStatus==2 || record.authStatus==6" type="vertical" v-action:DELETE />
+          <a v-if="record.authStatus==7" v-action:DELETE @click="deleteUser(record)">删除</a>
         </template>
       </span>
     </s-table>
@@ -133,7 +118,9 @@ export default {
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
-      queryParam: {},
+      queryParam: {
+        authStatus: 2
+      },
       // 表头
       columns: [
         {

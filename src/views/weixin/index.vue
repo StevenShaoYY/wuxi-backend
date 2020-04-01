@@ -7,7 +7,7 @@
             <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
           </a-col>
           <a-col :md="4" :sm="24">
-            <a-button type="primary" icon="plus" @click="add()">添加图文</a-button>
+            <a-button style="float:right" type="primary" icon="plus" @click="add()">添加图文</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -15,15 +15,16 @@
 
     <s-table
       ref="table"
-      style="margin-top:10px;"
+      style="margin-top:20px;"
       size="default"
-      rowKey="key"
+      rowKey="mediaId"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
+      :pagination="paginationT"
     >
       <span slot="status" slot-scope="text">
-        <img :src="text" alt="">
+        <img style="width:160px;height:90px;" :src="text" alt="">
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
@@ -65,6 +66,9 @@ export default {
   },
   data () {
     return {
+      paginationT: {
+        pageSizeOptions: ['10', '20']
+      },
       mdl: {},
       // 高级搜索 展开/关闭
       advanced: false,

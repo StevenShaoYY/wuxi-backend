@@ -17,17 +17,27 @@ import store from '@/store'
 const action = Vue.directive('action', {
   inserted: function (el, binding, vnode) {
     const actionName = binding.arg
-    const roles = store.getters.roles
+    const roles = store.getters.userInfo.role
     const elVal = vnode.context.$route.meta.permission
-    const permissionId = elVal instanceof String && [elVal] || elVal
-    roles.permissions.forEach(p => {
-      if (!permissionId.includes(p.permissionId)) {
-        return
-      }
-      if (p.actionList && !p.actionList.includes(actionName)) {
-        el.parentNode && el.parentNode.removeChild(el) || (el.style.display = 'none')
-      }
-    })
+    // const permissionId = elVal instanceof String && [elVal] || elVal
+    const Action = elVal[0] + ':' + actionName
+    // console.log('action1', actionName)
+    // console.log('action2', elVal[0] + ':' + actionName)
+    // console.log('action3', roles)
+    // console.log('action4', permissionId)
+    if (roles.permissionList.includes(Action)) {
+
+    } else {
+      el.parentNode && el.parentNode.removeChild(el) || (el.style.display = 'none')
+    }
+    // roles.permissionList.forEach(p => {
+    //   if (!permissionId.includes(p.permissionId)) {
+    //     return
+    //   }
+    //   if (p.actionList && !p.actionList.includes(actionName)) {
+    //     el.parentNode && el.parentNode.removeChild(el) || (el.style.display = 'none')
+    //   }
+    // })
   }
 })
 

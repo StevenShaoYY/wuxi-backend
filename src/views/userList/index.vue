@@ -7,7 +7,7 @@
             <a-input-search placeholder="搜索用户名、姓名、备注" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
           </a-col>
           <a-col :md="4" :sm="24">
-            <a-button type="primary" icon="plus" @click="$refs.createModal.add()">添加管理员</a-button>
+            <a-button style="float:right" type="primary" icon="plus" @click="$refs.createModal.add()">添加管理员</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -15,7 +15,7 @@
 
     <s-table
       ref="table"
-      style="margin-top:10px;"
+      style="margin-top:20px;"
       size="default"
       rowKey="key"
       :columns="columns"

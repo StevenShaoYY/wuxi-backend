@@ -68,6 +68,7 @@ const user = {
             role.id = result.id
             role.permissionList = result.modulesName
             result.role = role
+            console.log(8888, role)
             commit('SET_ROLES', role)
             commit('SET_INFO', result)
           } else {

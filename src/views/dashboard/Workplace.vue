@@ -19,7 +19,7 @@
             :body-style="{ padding: 0 }">
             <a slot="extra"></a>
             <div>
-              <a-card-grid class="project-card-grid">
+              <a-card-grid class="project-card-grid" @click="$router.push('/huiyuan/Authentication')">
                 <a-card :bordered="false" :body-style="{ padding: 0 }">
                   <a-card-meta>
                     <div slot="title" class="card-title">
@@ -32,13 +32,13 @@
                     </div>
                   </a-card-meta>
                   <div class="project-item">
-                    <a href="/huiyuan/Authentication">快速前往></a>
+                    <a>快速前往></a>
                     <!-- <span class="datetime">9小时前</span> -->
                   </div>
                 </a-card>
               </a-card-grid>
               <a-card-grid class="project-card-grid">
-                <a-card :bordered="false" :body-style="{ padding: 0 }">
+                <a-card :bordered="false" :body-style="{ padding: 0 }" @click="$router.push('/huiyuan/reply')">
                   <a-card-meta>
                     <div slot="title" class="card-title">
                       <!-- <a-avatar size="small" :src="item.cover"/> -->
@@ -50,7 +50,7 @@
                     </div>
                   </a-card-meta>
                   <div class="project-item">
-                    <a href="/huiyuan/reply">快速前往></a>
+                    <a>快速前往></a>
                     <!-- <span class="datetime">9小时前</span> -->
                   </div>
                 </a-card>
@@ -93,7 +93,7 @@ import zhexianChart from '@/components/zhexianChart'
 import { getHome1, getHome2 } from '@/api/home'
 // import { Chart } from '@antv/g2'
 // const DataSet = require('@antv/data-set')
-const searchUserScale = ['时间', '会员数']
+const searchUserScale = ['会员数', '日期']
 export default {
   name: 'Workplace',
   components: {

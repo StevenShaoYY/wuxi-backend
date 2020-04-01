@@ -15,7 +15,7 @@
 
     <s-table
       ref="table"
-      style="margin-top:10px;"
+      style="margin-top:20px;"
       size="default"
       rowKey="serialNumber"
       :columns="columns"
@@ -107,6 +107,8 @@ export default {
         return replyList({
           currentPage: parameter.pageNo,
           pageSize: parameter.pageSize,
+          sortField: parameter.sortField,
+          sortOrder: parameter.sortOrder,
           queryKey: this.queryParam
         }).then(res => {
             return res.result

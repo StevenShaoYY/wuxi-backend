@@ -34,7 +34,7 @@ export const asyncRouterMap = [
                 path: 'huiyuan',
                 name: 'huiyuan',
                 redirect: '/huiyuan/single',
-                component: RouteView,
+                component: PageView,
                 meta: { title: '会员管理', keepAlive: true, icon: 'car', permission: ['MEMBER'] },
                 children: [
                     {
@@ -72,12 +72,12 @@ export const asyncRouterMap = [
                 path: 'weixin',
                 name: 'weixin',
                 redirect: '/weixin/index',
-                component: RouteView,
+                component: PageView,
                 meta: { title: '公众号', keepAlive: true, icon: 'wechat', permission: ['WECHAT'] },
                 children: [
                     {
                         path: '/index',
-                        name: 'weixin',
+                        name: 'weixinIndex',
                         component: () =>
                             import('@/views/weixin/index'),
                         meta: { title: '图文管理', keepAlive: true, permission: ['WECHAT:NEWS'] }
@@ -97,14 +97,14 @@ export const asyncRouterMap = [
                         name: 'UserList',
                         component: () =>
                             import('@/views/userList/index'),
-                        meta: { title: '用户列表', keepAlive: true, permission: ['SYSTEM:ADMIN'] }
+                        meta: { title: '用户管理', keepAlive: true, permission: ['SYSTEM:ADMIN'] }
                     },
                     {
                         path: '/other/list/role-list',
                         name: 'RoleList',
                         component: () =>
                             import('@/views/roleList/index'),
-                        meta: { title: '角色列表', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                        meta: { title: '角色管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
                     }
 
                 ]

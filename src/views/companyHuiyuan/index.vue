@@ -3,45 +3,34 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
-            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px;" @search="onSearch"/>
+          <a-col :md="24" :sm="24">
+            <a-input-search placeholder="搜索编号、姓名、手机号码" style="width:210px;float:left;margin-left: 16px;" @search="onSearch"/>
+            <span style="float:left;margin-top:5px;margin-left: 16px;">开通日期：</span>
+            <a-range-picker
+              style="float:left;width:170px;margin-left:15px;"
+              format="YYYY-MM-DD"
+              @change="onChangeStart"
+            />
+            <span style="float:left;margin-top:5px;margin-left: 16px;">到期日期:</span>
+            <a-range-picker
+              style="float:left;width:170px;margin-left:15px;"
+              format="YYYY-MM-DD"
+              @change="onChangeEnd"
+            />
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:MADD>添加单位成员</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加单位会员</a-button>
           </a-col>
-          <a-col :md="6" :sm="24">
-            <a-row>
-              <a-col :md="8" :sm="6">
-                <span style="float:right;margin-top:5px;margin-right:15px;">开通日期</span>
-              </a-col>
-              <a-col :md="16" :sm="18">
-                <a-range-picker
-                  format="YYYY-MM-DD"
-                  @change="onChangeStart"
-                />
-              </a-col>
-            </a-row>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-row>
-              <a-col :md="8" :sm="6">
-                <span style="float:right;margin-top:5px;margin-right:15px;">到期日期</span>
-              </a-col>
-              <a-col :md="16" :sm="18">
-                <a-range-picker
-                  format="YYYY-MM-DD"
-                  @change="onChangeEnd"
-                />
-              </a-col>
-            </a-row>
-          </a-col>
-          <a-col :md="4" :sm="24">
-            <a-button type="primary" icon="plus" @click="$refs.createModal.add()">添加会员</a-button>
-          </a-col>
+          <!-- <a-col :md="7" :sm="24">
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:MADD>添加单位成员</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加单位会员</a-button>
+          </a-col> -->
         </a-row>
       </a-form>
     </div>
 
     <s-table
       ref="table"
-      style="margin-top:10px;"
+      style="margin-top:20px;"
       size="default"
       rowKey="serialNumber"
       :columns="columns"
@@ -63,8 +52,8 @@
           <a-divider type="vertical" />
           <a v-if="record.status==1" @click="stop(record)">禁用</a>
           <a v-else @click="start(record)">启用</a>
-          <a-divider type="vertical" />
-          <a @click="deleteUser(record)">删除</a>
+          <a-divider type="vertical" v-action:DELETE/>
+          <a @click="deleteUser(record)" v-action:DELETE>删除</a>
         </template>
       </span>
     </s-table>
@@ -177,7 +166,9 @@ export default {
       loadData: (parameter, filters) => {
         const page = {
           currentPage: parameter.pageNo,
-          pageSize: parameter.pageSize
+          pageSize: parameter.pageSize,
+          sortField: parameter.sortField,
+          sortOrder: parameter.sortOrder
         }
         return getSingle(Object.assign(page, this.queryParam)).then(res => {
             return res.result
