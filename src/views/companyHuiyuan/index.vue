@@ -17,7 +17,7 @@
               format="YYYY-MM-DD"
               @change="onChangeEnd"
             />
-            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:MADD>添加单位成员</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal2.add()" v-action:MADD>添加单位成员</a-button>
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加单位会员</a-button>
           </a-col>
           <!-- <a-col :md="7" :sm="24">
@@ -58,6 +58,7 @@
       </span>
     </s-table>
     <create-form ref="createModal" @ok="handleOk" />
+    <create-form2 ref="createModal2" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -65,6 +66,7 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
+import CreateForm2 from './modules/CreateForm2'
 import { getSingle, disableSingle, enableSingle, deleteSingle } from '@/api/huiyuan'
 
 const statusMap = {
@@ -101,7 +103,8 @@ export default {
   components: {
     STable,
     Ellipsis,
-    CreateForm
+    CreateForm,
+    CreateForm2
   },
   data () {
     return {
@@ -210,7 +213,11 @@ export default {
       this.$refs.table.refresh(true)
     },
     handleEdit (record) {
-      this.$refs.createModal.update(record)
+      // if (record.type === 2) {
+        this.$refs.createModal.update(record)
+      // } else {
+      //   this.$refs.createModal2.update(record)
+      // }
     },
     stop (record) {
       this.$confirm({

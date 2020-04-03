@@ -22,6 +22,7 @@ router.beforeEach((to, from, next) => {
       next({ path: defaultRoutePath })
       NProgress.done()
     } else {
+      console.log(555, store.getters.roles)
       if (store.getters.roles.length === 0) {
         store
           .dispatch('GetInfo')
@@ -46,7 +47,7 @@ router.beforeEach((to, from, next) => {
           .catch(() => {
             notification.error({
               message: '错误',
-              description: '请求用户信息失败，请重试'
+              description: '对不起，您没有登录权限！'
             })
             store.dispatch('Logout').then(() => {
               next({ path: '/user/login', query: { redirect: to.fullPath } })

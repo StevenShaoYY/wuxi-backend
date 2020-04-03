@@ -93,7 +93,7 @@ export function deleteRole (parameter) {
 }
 export function getModule (parameter) {
   return axios({
-    url: '/role/getModuleAll',
+    url: '/role/getModuleTree',
     method: 'post',
     data: parameter
   })

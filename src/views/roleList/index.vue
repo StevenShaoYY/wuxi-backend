@@ -17,7 +17,7 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="key"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"

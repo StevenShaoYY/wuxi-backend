@@ -1,28 +1,22 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', device]">
     <div class="container">
-      <div class="top">
+      <!-- <div class="top">
         <div class="header">
           <img src="~@/assets/logo.svg" class="logo" alt="logo">
           <span class="title">无锡市道路交通协会后台管理系统</span>
         </div>
         <div class="desc">
-          <!-- Ant Design 是西湖区最具影响力的 Web 设计规范 -->
         </div>
-      </div>
+      </div> -->
 
       <route-view></route-view>
 
-      <div class="footer">
-        <!-- <div class="links">
-          <a href="_self">帮助</a>
-          <a href="_self">隐私</a>
-          <a href="_self">条款</a>
-        </div> -->
+      <!-- <div class="footer">
         <div class="copyright">
           Copyright &copy; 2020
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -63,9 +57,12 @@ export default {
     .container {
       width: 100%;
       min-height: 100%;
-      background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
-      background-size: 100%;
-      padding: 110px 0 144px;
+      background:url(~@/assets/login-big.png) no-repeat;
+      background-size: 100vw 100vh;
+      // padding: 110px 0 144px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
 
       a {

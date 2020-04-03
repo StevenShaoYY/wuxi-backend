@@ -26,22 +26,22 @@
             :labelCol="labelCol2"
             :wrapperCol="wrapperCol2"
           >
-            <a-checkbox-group
-              v-decorator="[
-                'modules', {rules: [{required: true, message: '请选择角色权限'}]}]"
-              placeholder="请选择角色权限"
+            <a-tree
+              checkable
+              :checkStrictly="true"
+              @check="onSelect"
+              :treeData="resourceData"
+              :defaultExpandAll="true"
+              v-model="value"
             >
-              <a-row>
-                <a-col :span="24" v-for="(item, index) of roleList" :key="index">
-                  <a-checkbox :value="item.id">
-                    {{ item.displayName }}
-                  </a-checkbox>
-                </a-col>
+              <a-icon slot="switcherIcon" type="down" />
+              <span slot="custom" slot-scope="item">
+                {{ item.title }}
+              </span>
+            </a-tree>
+          </a-form-item>
 
-              </a-row>
-
-            </a-checkbox-group>
-          </a-form-item></a-col>
+          </a-col>
         </a-row>
         <a-row :gutter="24">
           <a-col :span="24"><a-form-item
@@ -78,15 +78,76 @@ export default {
       roleList: [],
       form: this.$form.createForm(this),
       title: '新增会员',
-      rid: ''
+      rid: '',
+      resourceData: [],
+      value: [],
+      selectIdList: []
     }
   },
   created () {
     getModule({}).then(res => {
-      this.roleList = res.result
+      this.resourceData = res.result
+      this.filterData(this.resourceData)
+      console.log(this.resourceData)
     })
   },
   methods: {
+    addParent (item, key) {
+      console.log('爹的', item.parent)
+      if (item.parent && item.parent.length !== 0) {
+        console.log('是否选中', key.checked)
+        if (key.checked === false) {
+          if (this.value['checked'].indexOf(item.parent.key) < 0) {
+            this.value['checked'].push(item.parent.key)
+          }
+        }
+        if (item.parent) { this.addParent(item.parent, key) }
+      }
+    },
+    addChildren (item, key) {
+      if (key.checked === true) {
+        for (const chi of item) {
+          console.log('子节点', chi)
+          console.log('子节点', this.value['checked'])
+          if (this.value['checked'].indexOf(chi.key) >= 0) {
+            const sp = this.value['checked'].indexOf(chi.key)
+            console.log('子节点删除', sp)
+            this.value['checked'].splice(sp, 1)
+          }
+          if (chi.children && chi.children.length > 0) { this.addChildren(chi.children, key) }
+        }
+      }
+    },
+    findPath (pathObj, key) {
+      for (const item of pathObj) {
+        if (item.value === key.value) {
+          console.log('item', item)
+          this.addParent(item, key)
+          if (item.children && item.children.length > 0) { this.addChildren(item.children, key) }
+        }
+        if (item.children && item.children.length !== 0) {
+          this.findPath(item.children, key)
+        }
+      }
+    },
+    onSelect (selectedKeys, info) {
+      this.selectIdList = []
+      this.findPath(this.resourceData, info.node)
+      console.log('最终选中', this.value)
+    },
+    filterData (tree, parent) {
+      for (const item of tree) {
+        item.scopedSlots = { title: 'custom' }
+        if (parent) {
+          item.parent = parent
+        } else {
+          item.parent = []
+        }
+        if (item.children && item.children.length !== 0) {
+          this.filterData(item.children, item)
+        }
+      }
+    },
     compareToFirstPassword (rule, value, callbackFn) {
       const form = this.form
       if (value && value !== form.getFieldValue('password')) {
@@ -113,9 +174,9 @@ export default {
       setTimeout(() => {
         this.form.setFieldsValue({
           name: val.name,
-          modules: val.modules,
           remark: val.remark
         })
+        this.value = val.modules
       }, 100)
     },
     handleSubmit () {
@@ -123,8 +184,13 @@ export default {
       this.confirmLoading = true
       validateFields((errors, values) => {
         if (!errors) {
+          if (this.value.checked.length === 0) {
+            this.$message.error('请先选择角色功能权限！')
+            this.confirmLoading = false
+            return
+          }
           if (this.title === '新增管理员') {
-            addRole(Object.assign(values)).then(res => {
+            addRole(Object.assign(values, { modules: this.value.checked })).then(res => {
               if (res.code === '200') {
                 this.visible = false
                 this.confirmLoading = false
@@ -138,7 +204,8 @@ export default {
             })
           } else {
             updateRole(Object.assign(values, {
-              id: this.rid
+              id: this.rid,
+              modules: this.value.checked
             })).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -159,6 +226,7 @@ export default {
     },
     handleCancel () {
       this.visible = false
+      this.value = []
       this.form.resetFields()
     }
   }

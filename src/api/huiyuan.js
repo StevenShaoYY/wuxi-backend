@@ -101,3 +101,11 @@ export function returnFund (parameter) {
     data: parameter
   })
 }
+
+export function getComList (parameter) {
+  return axios({
+    url: '/member/getCompanyAll',
+    method: 'post',
+    data: parameter
+  })
+}
