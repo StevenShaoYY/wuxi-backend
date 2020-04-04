@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
+    :maskClosable="false"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">

@@ -4,7 +4,7 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="20" :sm="24">
-            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
+            <!-- <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px; width: 272px;" @search="onSearch"/> -->
           </a-col>
           <a-col :md="4" :sm="24">
             <a-button style="float:right" type="primary" icon="plus" @click="add()">添加图文</a-button>
@@ -23,8 +23,12 @@
       showPagination="auto"
       :pagination="paginationT"
     >
+      <span slot="title" slot-scope="text">
+
+        <a target="_blank" :href="text.url">{{ text.title }}</a>
+      </span>
       <span slot="status" slot-scope="text">
-        <img style="width:160px;height:90px;" :src="text" alt="">
+        <img style="width:160px;height:90px;" :src="'http://101.132.194.14/traffic/ops/weixin/getImage?imageUrl='+text" alt="">
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
@@ -83,7 +87,9 @@ export default {
         },
         {
           title: '标题',
-          dataIndex: 'articles[0].title'
+          dataIndex: 'articles[0]',
+          scopedSlots: { customRender: 'title' }
+
         },
         {
           title: '作者',

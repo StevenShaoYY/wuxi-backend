@@ -25,8 +25,11 @@
       <span slot="status" slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
-      <span slot="type" slot-scope="text">
+      <span slot="type2" slot-scope="text">
         {{ text | typeFilter }}
+      </span>
+      <span slot="type" slot-scope="text">
+        {{ text | roleFilter }}
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
@@ -70,6 +73,10 @@ const typeMap = {
   2: {
     status: 'processing',
     text: '前台'
+  },
+  3: {
+    status: 'processing',
+    text: '单位管理员'
   }
 }
 
@@ -99,8 +106,13 @@ export default {
         },
         {
           title: '用户角色',
-          dataIndex: 'type',
+          dataIndex: 'rolesName',
           scopedSlots: { customRender: 'type' }
+        },
+        {
+          title: '管理员类型',
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type2' }
         },
         {
           title: '用户状态',
@@ -148,6 +160,9 @@ export default {
     },
     statusTypeFilter (type) {
       return statusMap[type].status
+    },
+    roleFilter (type) {
+      return type.join(',')
     },
     typeFilter (type) {
       return typeMap[type].text

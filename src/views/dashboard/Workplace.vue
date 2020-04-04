@@ -43,10 +43,10 @@
                     <div slot="title" class="card-title">
                       <!-- <a-avatar size="small" :src="item.cover"/> -->
                       <a-icon class="icon-a" type="mail" />
-                      <a>今日反馈</a>
+                      <a>会员反馈</a>
                     </div>
                     <div slot="description" class="card-description">
-                      今日反馈{{ homeData.feedbackCount }}条
+                      会员反馈{{ homeData.feedbackCount }}条
                     </div>
                   </a-card-meta>
                   <div class="project-item">

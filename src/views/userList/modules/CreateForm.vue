@@ -6,9 +6,52 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
+    :maskClosable="false"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
+        <a-row :gutter="24">
+          <a-col :span="24"><a-form-item
+            label="管理员类型"
+            :labelCol="labelCol2"
+            :wrapperCol="wrapperCol2"
+          >
+            <a-select
+              v-decorator="[
+                'type', {rules: [{required: true, message: '请选择管理员类型！'}]}]"
+              placeholder="请选择管理员类型"
+              @change="showCom"
+            >
+              <a-select-option :value="1">
+                管理员
+              </a-select-option>
+              <a-select-option :value="2">
+                前台
+              </a-select-option>
+              <a-select-option :value="3">
+                单位管理员
+              </a-select-option>
+            </a-select>
+          </a-form-item></a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="24"><a-form-item
+            v-if="showCompany"
+            label="单位名称"
+            :labelCol="labelCol2"
+            :wrapperCol="wrapperCol2"
+          >
+            <a-select
+              v-decorator="[
+                'companyId',{rules: [{required: true, message: '请选择单位名称！'}]}]"
+              placeholder="请选择单位名称"
+            >
+              <a-select-option v-for="(item, index) of companyList" :key="index" :value="item.id">
+                {{ item.companyName }}
+              </a-select-option>
+            </a-select>
+          </a-form-item></a-col>
+        </a-row>
         <a-row :gutter="24">
           <a-col :span="24"><a-form-item
             label="用户名"
@@ -40,9 +83,11 @@
             <a-input
               placeholder="请输入密码"
               type="password"
-              v-decorator="['password', {rules: [{required: true, message: '请输入密码！'}, {
-                validator: validateToNextPassword,
-              },]}]" />
+              v-decorator="['password', {rules: [
+                {required: pwaRequired, message: '请输入密码！'},
+                {
+                  validator: validateToNextPassword,
+                },]}]" />
 
           </a-form-item></a-col>
         </a-row>
@@ -55,10 +100,11 @@
             <a-input
               placeholder="请输入确认密码"
               type="password"
-              v-decorator="['password2', {rules: [{required: true, message: '请输入确认密码！'},
-                                                  {
-                                                    validator: compareToFirstPassword,
-                                                  }]}]" />
+              v-decorator="['password2', {rules: [
+                {required: pwaRequired, message: '请输入确认密码！'},
+                {
+                  validator: compareToFirstPassword,
+                }]}]" />
 
           </a-form-item></a-col>
         </a-row>
@@ -99,6 +145,8 @@
 
 <script>
 import { getRoleAll, addAdmin, updateAdmin } from '@/api/role'
+import { getComList } from '@/api/huiyuan'
+
 export default {
   data () {
     return {
@@ -115,15 +163,29 @@ export default {
       roleList: [],
       form: this.$form.createForm(this),
       title: '新增会员',
-      rid: ''
+      rid: '',
+      pwaRequired: true,
+      companyList: [],
+      showCompany: false
     }
   },
   created () {
     getRoleAll({}).then(res => {
       this.roleList = res.result
     })
+    getComList({}).then(res => {
+      this.companyList = res.result
+    })
   },
   methods: {
+    showCom (val) {
+      console.log(val)
+      if (val === 3) {
+        this.showCompany = true
+      } else {
+        this.showCompany = false
+      }
+    },
     compareToFirstPassword (rule, value, callbackFn) {
       const form = this.form
       if (value && value !== form.getFieldValue('password')) {
@@ -142,11 +204,16 @@ export default {
     add () {
       this.visible = true
       this.title = '新增管理员'
+      this.pwaRequired = true
     },
     update (val) {
       this.visible = true
       this.title = '编辑管理员'
       this.rid = val.id
+      this.pwaRequired = false
+      if (val.type === 3) {
+        this.showCompany = true
+      }
       setTimeout(() => {
         this.form.setFieldsValue({
           name: val.name,
@@ -154,7 +221,9 @@ export default {
           password: '',
           password2: '',
           roles: val.roles,
-          remark: val.remark
+          remark: val.remark,
+          type: val.type,
+          companyId: val.companyId
         })
       }, 100)
     },
@@ -165,9 +234,7 @@ export default {
         if (!errors) {
           if (this.title === '新增管理员') {
             delete values.password2
-            addAdmin(Object.assign(values, {
-              type: 1
-            })).then(res => {
+            addAdmin(Object.assign(values)).then(res => {
               if (res.code === '200') {
                 this.visible = false
                 this.confirmLoading = false
@@ -181,7 +248,6 @@ export default {
             })
           } else {
             updateAdmin(Object.assign(values, {
-              type: 1,
               id: this.rid
             })).then(res => {
               if (res.code === '200') {
@@ -203,6 +269,7 @@ export default {
     },
     handleCancel () {
       this.visible = false
+      this.showCompany = false
       this.form.resetFields()
     }
   }

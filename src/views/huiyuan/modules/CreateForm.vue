@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
+    :maskClosable="false"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -197,7 +198,7 @@
             <a-input
               :disabled="disable"
               placeholder="请输入发票号码"
-              v-decorator="['invoiceNumber',{initialValue:''}]" />
+              v-decorator="['invoiceNumber',{rules: [{required: true, message: '请输入发票号码！'}]}]" />
           </a-form-item></a-col>
           <a-col :span="12"><a-form-item
             label="会员分类"

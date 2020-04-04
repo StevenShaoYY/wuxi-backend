@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
+    :maskClosable="false"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
@@ -209,7 +210,22 @@
             <a-input
               placeholder="请输入发票号码"
               :disabled="disable"
-              v-decorator="['invoiceNumber',{initialValue:''}]" />
+              v-decorator="['invoiceNumber',{rules: [{required: true, message: '请输入发票号码！'}]}]" />
+          </a-form-item></a-col>
+          <a-col :span="12"><a-form-item
+            label="会员分类"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          > <a-select
+            :disabled="disable"
+            v-decorator="[
+              'vipType',{initialValue:1}]"
+            placeholder="请选择会员类型"
+          >
+            <a-select-option v-for="(item, index) of vipType2" :key="index" :value="item.value">
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
@@ -397,12 +413,14 @@ export default {
           if (this.title === '新增会员') {
             const invoiceNumber = values.invoiceNumber
             delete values.invoiceNumber
+            const vipType2 = values.vipType
+            delete values.vipType
             addHuiyuan({
               authInfo: values,
               invoiceNumber: invoiceNumber,
               remark: values.remark,
               type: 2,
-              vipType: 3
+              vipType: vipType2
             }).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -418,13 +436,15 @@ export default {
           } else {
             const invoiceNumber = values.invoiceNumber
             delete values.invoiceNumber
+            const vipType2 = values.vipType
+            delete values.vipType
             updateHuiyuan({
               authInfo: values,
               invoiceNumber: invoiceNumber,
               type: 2,
               id: this.tId,
               remark: values.remark,
-              vipType: 3,
+              vipType: vipType2,
               companyId: this.cId
             }).then(res => {
               if (res.code === '200') {

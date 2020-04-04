@@ -49,6 +49,7 @@ const user = {
           localStorage.setItem('SET_USERID', result.id)
           resolve()
         }).catch(error => {
+          console.log(error)
           reject(error)
         })
       })

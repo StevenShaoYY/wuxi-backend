@@ -109,3 +109,11 @@ export function getComList (parameter) {
     data: parameter
   })
 }
+
+export function read (parameter) {
+  return axios({
+    url: '/feedback/read',
+    method: 'post',
+    data: parameter
+  })
+}

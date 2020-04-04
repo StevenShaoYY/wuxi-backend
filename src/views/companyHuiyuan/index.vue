@@ -7,18 +7,18 @@
             <a-input-search placeholder="搜索编号、姓名、手机号码" style="width:210px;float:left;margin-left: 16px;" @search="onSearch"/>
             <span style="float:left;margin-top:5px;margin-left: 16px;">开通日期：</span>
             <a-range-picker
-              style="float:left;width:170px;margin-left:15px;"
+              style="float:left;width:200px;margin-left:15px;"
               format="YYYY-MM-DD"
               @change="onChangeStart"
             />
             <span style="float:left;margin-top:5px;margin-left: 16px;">到期日期:</span>
             <a-range-picker
-              style="float:left;width:170px;margin-left:15px;"
+              style="float:left;width:200px;margin-left:15px;"
               format="YYYY-MM-DD"
               @change="onChangeEnd"
             />
-            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal2.add()" v-action:MADD>添加单位成员</a-button>
-            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加单位会员</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal2.add()" v-action:MADD>添加成员</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加会员</a-button>
           </a-col>
           <!-- <a-col :md="7" :sm="24">
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:MADD>添加单位成员</a-button>
@@ -37,6 +37,18 @@
       :data="loadData"
       showPagination="auto"
     >
+      <span slot="name" slot-scope="text, record">
+        <span v-if="record.type==3">{{ record.authInfo.name }}</span>
+        <span v-else>{{ record.authInfo.companyLegalPerson }}</span>
+      </span>
+      <span slot="phone" slot-scope="text, record">
+        <span v-if="record.type==3">{{ record.authInfo.phoneNumber }}</span>
+        <span v-else>{{ record.authInfo.companyLegalPersonPhone }}</span>
+      </span>
+      <span slot="idcard" slot-scope="text, record">
+        <span v-if="record.type==3">{{ record.authInfo.certificateNumber }}</span>
+        <span v-else>{{ record.authInfo.companyLegalPersonCertificateNumber }}</span>
+      </span>
       <span slot="id" slot-scope="text, record">
         <span style="cursor: pointer;color:blue" @click="showDetail(record)">{{ text }}</span>
       </span>
@@ -128,11 +140,13 @@ export default {
         },
         {
           title: '姓名',
-          dataIndex: 'authInfo.companyLegalPerson'
+          dataIndex: 'authInfo.companyLegalPerson',
+          scopedSlots: { customRender: 'name' }
         },
         {
           title: '手机号码',
-          dataIndex: 'authInfo.companyLegalPersonPhone'
+          dataIndex: 'authInfo.companyLegalPersonPhone',
+          scopedSlots: { customRender: 'phone' }
         },
         {
           title: '会员类型',
@@ -141,7 +155,8 @@ export default {
         },
         {
           title: '身份证号码',
-          dataIndex: 'authInfo.companyLegalPersonCertificateNumber'
+          dataIndex: 'authInfo.companyLegalPersonCertificateNumber',
+          scopedSlots: { customRender: 'idcard' }
         },
         {
           title: '状态',
@@ -213,11 +228,11 @@ export default {
       this.$refs.table.refresh(true)
     },
     handleEdit (record) {
-      // if (record.type === 2) {
+      if (record.type === 2) {
         this.$refs.createModal.update(record)
-      // } else {
-      //   this.$refs.createModal2.update(record)
-      // }
+      } else {
+        this.$refs.createModal2.update(record)
+      }
     },
     stop (record) {
       this.$confirm({

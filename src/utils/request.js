@@ -13,6 +13,7 @@ const service = axios.create({
 })
 
 const err = (error) => {
+  console.log(222222, error.response)
   if (error.response) {
     const data = error.response.data
     const token = Vue.ls.get(ACCESS_TOKEN)
@@ -50,6 +51,21 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
+  console.log(222222, response)
+  if (response.data.message === '用户超时或未登录') {
+    const token = Vue.ls.get(ACCESS_TOKEN)
+    notification.error({
+      message: '注意',
+      description: '用户超时或未登录!即将跳转到登录页......'
+    })
+    if (token) {
+      store.dispatch('Logout').then(() => {
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
+      })
+    }
+  }
   return response.data
 }, err)
 

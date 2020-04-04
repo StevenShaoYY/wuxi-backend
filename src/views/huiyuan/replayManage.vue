@@ -27,7 +27,9 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="deleteR(record)">删除</a>
+          <a v-if="record.status==0" @click="stop(record)">已读</a>
+          <!-- <a-divider v-if="record.status==0" type="vertical"/> -->
+          <a v-else @click="deleteR(record)">删除</a>
         </template>
       </span>
     </s-table>
@@ -39,16 +41,16 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
-import { replyList, replyDelete } from '@/api/huiyuan'
+import { replyList, replyDelete, read } from '@/api/huiyuan'
 
 const statusMap = {
   0: {
     status: 'default',
-    text: '禁用中'
+    text: '未读'
   },
   1: {
     status: 'processing',
-    text: '启用中'
+    text: '已读'
   }
 }
 
@@ -89,6 +91,11 @@ export default {
           dataIndex: 'content'
         },
         {
+          title: '阅读状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
+        },
+        {
           title: '提交日期',
           dataIndex: 'createTime',
           sorter: true
@@ -96,7 +103,7 @@ export default {
         {
           title: '操作',
           dataIndex: 'action',
-          width: '100px',
+          width: '150px',
           scopedSlots: { customRender: 'action' }
         }
       ],
@@ -137,6 +144,28 @@ export default {
     handleEdit (record) {
       console.log(record)
       this.$refs.modal.edit(record)
+    },
+    stop (record) {
+      this.$confirm({
+        title: '已读反馈',
+        content: '确定已读该会反馈吗？',
+        onOk: () => {
+          return new Promise((resolve, reject) => {
+            read({
+              id: record.id
+            }).then(
+              res => {
+                if (res.code === '200') {
+                  this.$message.success('已读反馈成功！')
+                  this.$refs.table.refresh(true)
+                  resolve()
+                }
+              }
+            )
+          }).catch(() => console.log('Oops errors!'))
+        },
+        onCancel () {}
+      })
     },
     deleteR (record) {
        this.$confirm({
