@@ -207,7 +207,7 @@
           > <a-select
             :disabled="disable"
             v-decorator="[
-              'vipType',{initialValue:1}]"
+              'vipType',{rules: [{required: true, message: '请选择会员分类！'}]}]"
             placeholder="请选择会员类型"
           >
             <a-select-option v-for="(item, index) of vipType2" :key="index" :value="item.value">

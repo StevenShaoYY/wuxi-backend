@@ -231,7 +231,7 @@
           > <a-select
             :disabled="disable"
             v-decorator="[
-              'vipType',{initialValue:1}]"
+              'vipType',{rules: [{required: true, message: '请选择会员分类！'}]}]"
             placeholder="请选择会员类型"
           >
             <a-select-option v-for="(item, index) of vipType2" :key="index" :value="item.value">
@@ -379,6 +379,7 @@ export default {
           totalStaff: val.authInfo.totalStaff,
           email: val.authInfo.email,
           companyGradle: val.authInfo.companyGradle,
+          address: val.authInfo.address,
           invoiceNumber: val.invoiceNumber,
           remark: val.remark,
           vipType: val.vipType
@@ -405,6 +406,7 @@ export default {
           registeredType: val.authInfo.registeredType,
           companyProperty: val.authInfo.companyProperty,
           industryClass: val.authInfo.industryClass,
+          address: val.authInfo.address,
           annualSale: val.authInfo.annualSale,
           totalStaff: val.authInfo.totalStaff,
           email: val.authInfo.email,
