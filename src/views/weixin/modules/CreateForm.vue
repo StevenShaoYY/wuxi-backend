@@ -12,7 +12,7 @@
       <a-form :form="form">
         <a-row>
           <a-col :span="24" style="text-align:center;">
-            <img :src="dataForm.articles[0].thumbUrl" alt="">
+            <img style="width:160px;height:90px;" :src="'http://101.132.194.14/traffic/ops/weixin/getImage?imageUrl='+dataForm.articles[0].thumbUrl" alt="">
           </a-col>
         </a-row>
         <a-row style="margin:18px 0;font-size: 14px;color: rgba(0, 0, 0, 0.85);">

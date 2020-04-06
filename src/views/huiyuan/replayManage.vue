@@ -157,7 +157,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('已读反馈成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -179,7 +179,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('删除反馈意见成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }

@@ -408,13 +408,15 @@ export default {
               }
             })
           } else {
+            const com = values.companyId
+            delete values.companyId
             updateHuiyuan({
               authInfo: values,
-              invoiceNumber: values.invoiceNumber,
-              type: 1,
+              companyId: com,
+              type: 3,
               id: this.tId,
               remark: values.remark,
-              vipType: values.vipType
+              vipType: 3
             }).then(res => {
               if (res.code === '200') {
                 this.visible = false

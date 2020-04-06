@@ -158,7 +158,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('删除图文成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }

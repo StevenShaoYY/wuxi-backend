@@ -44,9 +44,9 @@
       <span slot="action" slot-scope="text, record">
         <template>
           <a v-if="record.authStatus==2" @click="handleEdit(record)">认证</a>
-          <a-divider v-if="record.authStatus==2" type="vertical" />
+          <a-divider v-if="record.authStatus==2 || record.authStatus==6" type="vertical" />
           <a v-if="record.authStatus==2 || record.authStatus==6" @click="handleReturn(record)">退款</a>
-          <a-divider v-if="record.authStatus==2 || record.authStatus==6" type="vertical" v-action:DELETE />
+          <a-divider v-if="record.authStatus==7" type="vertical" v-action:DELETE />
           <a v-if="record.authStatus==7" v-action:DELETE @click="deleteUser(record)">删除</a>
         </template>
       </span>
@@ -243,11 +243,11 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('退款成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 } else {
                   this.$message.error(res.message)
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -269,7 +269,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('删除认证数据成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }

@@ -41,13 +41,17 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          console.log(response)
+          console.log(44444, response)
           const result = response.result
-          Vue.ls.set(ACCESS_TOKEN, response.message, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', response.message)
-          commit('SET_USERID', result.id)
-          localStorage.setItem('SET_USERID', result.id)
-          resolve()
+          if (response.code === '200') {
+            Vue.ls.set(ACCESS_TOKEN, response.message, 7 * 24 * 60 * 60 * 1000)
+            commit('SET_TOKEN', response.message)
+            commit('SET_USERID', result.id)
+            localStorage.setItem('SET_USERID', result.id)
+            resolve()
+          } else {
+            reject(response)
+          }
         }).catch(error => {
           console.log(error)
           reject(error)
@@ -62,7 +66,7 @@ const user = {
           id: localStorage.getItem('SET_USERID')
         }).then(response => {
           const result = response.result
-          console.log(222222, result)
+          console.log(33333, result)
           if (result.modulesName && result.modulesName.length > 0) {
             const role = {}
             role.name = result.name

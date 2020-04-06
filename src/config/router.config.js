@@ -18,14 +18,14 @@ export const asyncRouterMap = [
                 redirect: '/dashboard/workplace',
                 component: RouteView,
                 hideChildrenInMenu: true,
-                meta: { title: '信息统计', keepAlive: true, icon: bxAnaalyse, permission: ['INFO'] },
+                meta: { title: '信息统计', keepAlive: false, icon: bxAnaalyse, permission: ['INFO'] },
                 children: [
                     {
                         path: 'workplace',
                         name: 'Workplace',
                         component: () =>
                             import('@/views/dashboard/Workplace'),
-                        meta: { title: '信息统计', keepAlive: true, permission: ['INFO'] }
+                        meta: { title: '信息统计', keepAlive: false, permission: ['INFO'] }
                     }
                 ]
             },

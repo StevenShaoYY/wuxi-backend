@@ -191,7 +191,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('重置密码成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -213,7 +213,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('禁用管理员成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -235,7 +235,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('启用管理员成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -257,7 +257,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('删除管理员成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }

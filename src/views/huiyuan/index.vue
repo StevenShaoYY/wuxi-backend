@@ -188,7 +188,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('禁用会员成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -210,7 +210,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('启用会员成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }
@@ -232,7 +232,7 @@ export default {
               res => {
                 if (res.code === '200') {
                   this.$message.success('删除会员成功！')
-                  this.$refs.table.refresh(true)
+                  this.$refs.table.refresh()
                   resolve()
                 }
               }

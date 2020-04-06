@@ -13,7 +13,7 @@ const service = axios.create({
 })
 
 const err = (error) => {
-  console.log(222222, error.response)
+  console.log(222222, error)
   if (error.response) {
     const data = error.response.data
     const token = Vue.ls.get(ACCESS_TOKEN)
@@ -66,6 +66,12 @@ service.interceptors.response.use((response) => {
       })
     }
   }
+  // if (response.data.code === '1006') {
+  //   notification.error({
+  //     message: '注意',
+  //     description: '用户不存在'
+  //   })
+  // }
   return response.data
 }, err)
 
