@@ -79,7 +79,7 @@
             <a-select
               :disabled="disable"
               v-decorator="[
-                'nation',{initialValue:1}]"
+                'nation',{initialValue:'1'}]"
               placeholder="请选择民族"
             >
               <a-select-option v-for="(item, index) of nationList" :key="index" :value="item.value">
@@ -342,12 +342,12 @@ export default {
           phoneNumber: val.authInfo.phoneNumber,
           address: val.authInfo.address,
           gender: val.authInfo.gender,
-          nation: parseInt(val.authInfo.nation),
+          nation: parseInt(val.authInfo.nation) || '',
           areaName: val.authInfo.areaName,
           politicalFace: val.authInfo.politicalFace,
           school: val.authInfo.school,
-          educationRecord: parseInt(val.authInfo.educationRecord),
-          academicDegree: parseInt(val.authInfo.academicDegree),
+          educationRecord: parseInt(val.authInfo.educationRecord) || '',
+          academicDegree: parseInt(val.authInfo.academicDegree) || '',
           companyName: val.authInfo.companyName,
           companyDuty: val.authInfo.companyDuty,
           companyGradle: val.authInfo.companyGradle,
@@ -369,12 +369,12 @@ export default {
           phoneNumber: val.authInfo.phoneNumber,
           address: val.authInfo.address,
           gender: val.authInfo.gender,
-          nation: parseInt(val.authInfo.nation),
+          nation: parseInt(val.authInfo.nation) || '',
           areaName: val.authInfo.areaName,
           politicalFace: val.authInfo.politicalFace,
           school: val.authInfo.school,
-          educationRecord: parseInt(val.authInfo.educationRecord),
-          academicDegree: parseInt(val.authInfo.academicDegree),
+          educationRecord: parseInt(val.authInfo.educationRecord) || '',
+          academicDegree: parseInt(val.authInfo.academicDegree) || '',
           companyName: val.authInfo.companyName,
           companyDuty: val.authInfo.companyDuty,
           companyGradle: val.authInfo.companyGradle,
