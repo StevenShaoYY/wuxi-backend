@@ -101,6 +101,10 @@ const huiyuanMap = {
   2: {
     status: 'processing',
     text: '单位会员'
+  },
+  3: {
+    status: 'processing',
+    text: '单位成员'
   }
 }
 
