@@ -110,6 +110,18 @@
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
+          <a-col :span="24"><a-form-item
+            label="联系地址"
+            :labelCol="labelCol2"
+            :wrapperCol="wrapperCol2"
+          >
+            <a-input
+              placeholder="请输入联系地址"
+              :disabled="disable"
+              v-decorator="['address', {rules: [{required: true, message: '请输入联系地址！'}]}]" />
+          </a-form-item></a-col>
+        </a-row>
+        <a-row :gutter="24">
           <a-col :span="12"><a-form-item
             label="经营/业务范围"
             :labelCol="labelCol"
