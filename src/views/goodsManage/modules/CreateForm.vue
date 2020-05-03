@@ -220,6 +220,19 @@
                 v-decorator="['remark']" />
             </a-form-item></a-col>
           </a-row>
+          <a-row :gutter="24">
+            <a-col :span="24"><a-form-item
+              label="详细介绍"
+              :labelCol="labelCol2"
+              :wrapperCol="wrapperCol2"
+            >
+              <edit
+                ref="editor"
+                v-model="Editortext"
+                :disabled="allDisabled">
+              </edit>
+            </a-form-item></a-col>
+          </a-row>
         </a-card>
         <a-card title="商品库存" :bordered="false">
           <a-row :gutter="24">
@@ -325,16 +338,19 @@
 
 <script>
 import { add, update } from '@/api/shop'
+// import { uploadPic } from '@/api/upload'
 import { getList } from '@/api/tag'
 import { getCategoryList } from '@/api/category'
 import CreateForm3 from './CreateForm3'
 import CreateForm4 from './CreateForm4'
+import edit from './edit'
 import moment from 'moment'
 
 export default {
   components: {
     CreateForm3,
-    CreateForm4
+    CreateForm4,
+    edit
   },
   data () {
     return {
@@ -371,18 +387,14 @@ export default {
       AttributeList: [],
       keyWordInput: '',
       inputVisible: false,
-      isIntegral: 1
+      isIntegral: 1,
+      Editortext: '',
+      allDisabled: false
     }
   },
   created () {
     this.getTagList()
     this.getCateList()
-  },
-  mounted() {
-    this.tinymce();
-  },
-  beforeDestroy() {
-    this.$tinymce.remove()
   },
   methods: {
     moment,
@@ -423,7 +435,6 @@ export default {
     },
     handleClose (removedTag) {
       const tags = this.keywords.filter(tag => tag !== removedTag)
-      console.log(tags)
       this.keywords = tags
     },
 
