@@ -64,7 +64,67 @@ export const asyncRouterMap = [
                         component: () =>
                             import('@/views/huiyuan/replayManage'),
                         meta: { title: '反馈管理', keepAlive: true, permission: ['MEMBER:FEEDBACK'] }
+                    },
+                    {
+                        path: '/huiyuan/reserve',
+                        name: 'Reserve',
+                        component: () =>
+                            import('@/views/huiyuan/reserve'),
+                        meta: { title: '预约管理', keepAlive: true, permission: ['MEMBER:FEEDBACK'] }
                     }
+                ]
+            },
+            // other
+            {
+                path: '/mall',
+                name: 'mallPage',
+                component: PageView,
+                meta: { title: '商城管理', icon: 'user', permission: ['SYSTEM'] },
+                redirect: '/mall/list/shopManage',
+                children: [
+                    {
+                        path: '/mall/list/shopManage',
+                        name: 'ShopManage',
+                        component: () =>
+                            import('@/views/shopManage/index'),
+                        meta: { title: '商家管理', keepAlive: true, permission: ['SYSTEM:ADMIN'] }
+                    },
+                    {
+                        path: '/mall/list/goodsManage',
+                        name: 'GoodsManage',
+                        component: () =>
+                            import('@/views/roleList/index'),
+                        meta: { title: '商品管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    },
+                    {
+                        path: '/mall/list/orderManage',
+                        name: 'OrderManage',
+                        component: () =>
+                            import('@/views/orderManage/index'),
+                        meta: { title: '订单管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    },
+                    {
+                        path: '/mall/list/commentManage',
+                        name: 'CommentManage',
+                        component: () =>
+                            import('@/views/commentManage/index'),
+                        meta: { title: '评论管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    },
+                    {
+                        path: '/mall/list/tagManage',
+                        name: 'TagManage',
+                        component: () =>
+                            import('@/views/tagManage/index'),
+                        meta: { title: '标签管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    },
+                    {
+                        path: '/mall/list/categoryManage',
+                        name: 'CategoryManage',
+                        component: () =>
+                            import('@/views/categoryManage/index'),
+                        meta: { title: '类目管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    }
+
                 ]
             },
             // 微信
@@ -105,6 +165,20 @@ export const asyncRouterMap = [
                         component: () =>
                             import('@/views/roleList/index'),
                         meta: { title: '角色管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    },
+                    {
+                        path: '/other/list/dispose-manage',
+                        name: 'DisposeManage',
+                        component: () =>
+                            import('@/views/disposeManage/index'),
+                        meta: { title: '配置管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
+                    },
+                    {
+                        path: '/other/list/ad-manage',
+                        name: 'AdManage',
+                        component: () =>
+                            import('@/views/adManage/index'),
+                        meta: { title: '广告管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
                     }
 
                 ]

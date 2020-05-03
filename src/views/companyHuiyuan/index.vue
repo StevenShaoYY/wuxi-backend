@@ -19,6 +19,7 @@
             />
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal2.add()" v-action:MADD>添加成员</a-button>
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加会员</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="exportInfo" v-action:MADD>导出信息</a-button>
           </a-col>
           <!-- <a-col :md="7" :sm="24">
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:MADD>添加单位成员</a-button>
@@ -54,6 +55,9 @@
       </span>
       <span slot="status" slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+      </span>
+      <span slot="level" slot-scope="text">
+        <span>{{ text | levelFilter }}</span>
       </span>
       <span slot="huiyuanType" slot-scope="text">
         {{ text | huiyuanTypeFilter }}
@@ -162,6 +166,14 @@ export default {
           title: '状态',
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' }
+        }, {
+          title: '积分',
+          dataIndex: 'integral'
+        },
+        {
+          title: '星级',
+          dataIndex: 'level',
+          scopedSlots: { customRender: 'level' }
         },
         {
           title: '开通日期',
@@ -197,6 +209,13 @@ export default {
     }
   },
   filters: {
+    levelFilter (type) {
+      let star = ''
+      for (let i = 0; i <= type; i++) {
+        star = star + '★'
+      }
+      return star
+    },
     statusFilter (type) {
       return statusMap[type].text
     },
@@ -210,6 +229,9 @@ export default {
   created () {
   },
   methods: {
+    exportInfo () {
+
+    },
     showDetail (val) {
       this.$refs.createModal.showDetail(val)
     },

@@ -36,6 +36,9 @@
       <span slot="id" slot-scope="text, record">
         <span style="cursor: pointer;color:blue" @click="showDetail(record)">{{ text }}</span>
       </span>
+      <span slot="level" slot-scope="text">
+        <span>{{ text | levelFilter }}</span>
+      </span>
       <span slot="status" slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
@@ -112,6 +115,15 @@ export default {
           scopedSlots: { customRender: 'status' }
         },
         {
+          title: '积分',
+          dataIndex: 'integral'
+        },
+        {
+          title: '星级',
+          dataIndex: 'level',
+          scopedSlots: { customRender: 'level' }
+        },
+        {
           title: '开通日期',
           dataIndex: 'authTime',
           sorter: true
@@ -151,6 +163,13 @@ export default {
     },
     statusTypeFilter (type) {
       return statusMap[type].status
+    },
+    levelFilter (type) {
+      let star = ''
+      for (let i = 0; i <= type; i++) {
+        star = star + '★'
+      }
+      return star
     }
   },
   created () {
