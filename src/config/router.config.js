@@ -93,7 +93,7 @@ export const asyncRouterMap = [
                         path: '/mall/list/goodsManage',
                         name: 'GoodsManage',
                         component: () =>
-                            import('@/views/roleList/index'),
+                            import('@/views/goodsManage/index'),
                         meta: { title: '商品管理', keepAlive: true, permission: ['SYSTEM:ROLE'] }
                     },
                     {

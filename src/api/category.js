@@ -8,6 +8,14 @@ export function getList (parameter) {
   })
 }
 
+export function getCategoryList (parameter) {
+  return axios({
+    url: '/mall/goods/category/query',
+    method: 'post',
+    data: parameter
+  })
+}
+
 export function add (parameter) {
   return axios({
     url: '/mall/goods/category/add',
