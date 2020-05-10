@@ -20,6 +20,7 @@
               v-decorator="['type',{initialValue:1}]">
               <a-radio :value="1">系统标签</a-radio>
               <a-radio :value="2">商家标签</a-radio>
+              <a-radio :value="3">商品标签</a-radio>
             </a-radio-group>
           </a-form-item></a-col>
         </a-row>

@@ -19,19 +19,23 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
       :pagination="paginationT"
     >
+
+      <span slot="id" slot-scope="text, record">
+        <span style="cursor: pointer;color:blue" @click="showDetail(record)">{{ text }}</span>
+      </span>
       <span slot="status" slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
       <span slot="isOnSale" slot-scope="text">
         <span>{{ text | isOnSaleFilter }}</span>
       </span>
-      <span slot="isHot" slot-scope="text">
+      <span slot="isHotslot" slot-scope="text">
         <span>{{ text | isHotFilter }}</span>
       </span>
       <span slot="img" slot-scope="text">
@@ -118,7 +122,8 @@ export default {
       columns: [
         {
           title: '商品编号',
-          dataIndex: 'serialNumber'
+          dataIndex: 'serialNumber',
+          scopedSlots: { customRender: 'id' }
         },
         {
           title: '商品名称',
@@ -136,7 +141,7 @@ export default {
         {
           title: '是否推荐',
           dataIndex: 'isHot',
-          scopedSlots: { customRender: 'isHot' }
+          scopedSlots: { customRender: 'isHotslot' }
         },
         {
           title: '是否在售',
@@ -183,8 +188,11 @@ export default {
     statusFilter (type) {
       return statusMap[type].text
     },
+    statusTypeFilter (type) {
+      return statusMap[type].status
+    },
     isHotFilter (type) {
-      return isHotMap[type].status
+      return isHotMap[type].text
     },
     isOnSaleFilter (type) {
       return isOnSaleMap[type].text
@@ -193,6 +201,9 @@ export default {
   created () {
   },
   methods: {
+    showDetail (val) {
+      this.$refs.createModal.showDetail(val)
+    },
     add () {
       this.$refs.createModal.add()
     },

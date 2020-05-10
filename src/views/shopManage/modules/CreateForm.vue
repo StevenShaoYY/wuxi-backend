@@ -17,6 +17,7 @@
             :wrapperCol="wrapperCol"
           >
             <a-input
+              :disabled="isShowDetail"
               placeholder="请输入会员编号"
               v-decorator="['serialNumber', {rules: [{required: true, message: '请输入会员编号！'}]}]" />
           </a-form-item></a-col>
@@ -26,6 +27,7 @@
             :wrapperCol="wrapperCol"
           >
             <a-input
+              :disabled="isShowDetail"
               placeholder="请输入商家名称"
               v-decorator="['name', {rules: [{required: true, message: '请输入商家名称！'}]}]" />
           </a-form-item></a-col>
@@ -37,6 +39,7 @@
             :wrapperCol="wrapperCol2"
           >
             <a-input
+              :disabled="isShowDetail"
               placeholder="请输入联系地址"
               v-decorator="['address', {rules: [{required: true, message: '请输入联系地址！'}]}]" />
           </a-form-item></a-col>
@@ -48,6 +51,7 @@
             :wrapperCol="wrapperCol"
           >
             <a-input
+              :disabled="isShowDetail"
               placeholder="请输入手机号码"
               v-decorator="['phoneNumber', {rules: [{required: true, message: '请输入手机号码！'},
                                                     {validator:phoneCheck}]}]" />
@@ -58,6 +62,7 @@
             :wrapperCol="wrapperCol"
           >
             <a-input
+              :disabled="isShowDetail"
               placeholder="请输入排序权重"
               v-decorator="['sortOrder']" />
           </a-form-item></a-col>
@@ -72,6 +77,7 @@
               <!--
                 :file-list="fileList" -->
               <a-upload
+                :disabled="isShowDetail"
                 v-decorator="[
                   'cover',
                   {
@@ -80,7 +86,7 @@
                     rules: [{required: true, message: '请上传封面图片！'}]
                   },
                 ]"
-                action="http://101.132.194.14/traffic/mall/photo/upload"
+                action="http://101.132.194.14/traffic/ops/mall/photo/upload"
                 list-type="picture-card"
                 name="photo"
                 @change="handleChange"
@@ -102,6 +108,7 @@
           >
             <a-input
               type="textarea"
+              :disabled="isShowDetail"
               placeholder="请输入简介"
               :rows="3"
               v-decorator="['brief']" />
@@ -115,6 +122,7 @@
           >
             <a-input
               type="textarea"
+              :disabled="isShowDetail"
               :rows="3"
               placeholder="请输入备注"
               v-decorator="['remark']" />
@@ -122,6 +130,13 @@
         </a-row>
       </a-form>
     </a-spin>
+    <template slot="footer" >
+      <a-button key="back" v-if="isShowDetail==false" @click="handleCancel">取消</a-button>
+      <a-button key="submit" v-if="isShowDetail==false" type="primary" :loading="confirmLoading" @click="handleSubmit">
+        确定
+      </a-button>
+      <div v-if="isShowDetail==true"></div>
+    </template>
   </a-modal>
 </template>
 
@@ -153,7 +168,8 @@ export default {
       form: this.$form.createForm(this),
       title: '添加商家',
       rid: '',
-      fileListLength: 0
+      fileListLength: 0,
+      isShowDetail: false
     }
   },
   created () {
@@ -183,6 +199,30 @@ export default {
       this.visible = true
       this.title = '添加商家'
     },
+    showDetail (val) {
+      this.visible = true
+      this.title = '查看商家'
+      this.rid = val.id
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          serialNumber: val.serialNumber,
+          name: val.name,
+          address: val.address,
+          phoneNumber: val.phoneNumber,
+          sortOrder: val.sortOrder,
+          cover: [{
+              uid: '-1',
+              name: '商家封面图',
+              status: 'done',
+              url: val.cover
+            }],
+          brief: val.brief,
+          remark: val.remark
+        })
+        this.fileListLength = 1
+        this.isShowDetail = true
+      }, 100)
+    },
     update (val) {
       this.visible = true
       this.title = '编辑商家'
@@ -210,11 +250,10 @@ export default {
       const { form: { validateFields } } = this
       this.confirmLoading = true
       validateFields((errors, values) => {
-        console.log(values)
         if (!errors) {
           if (this.title === '添加商家') {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.picUrl = uploadData.picUrl[0].response.result
+            uploadData.cover = uploadData.cover[0].response.result
             add(uploadData).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -229,7 +268,7 @@ export default {
             })
           } else {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.picUrl = uploadData.picUrl[0].response.result
+            uploadData.cover = uploadData.cover[0].url || uploadData.cover[0].response.result
             update(Object.assign(uploadData, {
               id: this.rid
             })).then(res => {
@@ -253,6 +292,8 @@ export default {
     },
     handleCancel () {
       this.visible = false
+      this.fileListLength = 0
+      this.isShowDetail = false
       this.form.resetFields()
     }
   }

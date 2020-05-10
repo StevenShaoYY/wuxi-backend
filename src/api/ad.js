@@ -2,7 +2,7 @@ import { axios } from '@/utils/request'
 
 export function getList (parameter) {
   return axios({
-    url: '/ad/query',
+    url: '/advertise/query',
     method: 'post',
     data: parameter
   })
@@ -10,7 +10,7 @@ export function getList (parameter) {
 
 export function add (parameter) {
   return axios({
-    url: '/ad/add',
+    url: '/advertise/add',
     method: 'post',
     data: parameter
   })
@@ -18,14 +18,14 @@ export function add (parameter) {
 
 export function update (parameter) {
   return axios({
-    url: '/ad/update',
+    url: '/advertise/update',
     method: 'post',
     data: parameter
   })
 }
 export function DeleteData (parameter) {
   return axios({
-    url: '/ad/delete',
+    url: '/advertise/delete',
     method: 'post',
     data: parameter
   })
@@ -33,7 +33,7 @@ export function DeleteData (parameter) {
 
 export function startUse (parameter) {
   return axios({
-    url: '/ad/enable',
+    url: '/advertise/enable',
     method: 'post',
     data: parameter
   })
@@ -41,7 +41,7 @@ export function startUse (parameter) {
 
 export function stopUse (parameter) {
   return axios({
-    url: '/ad/disable',
+    url: '/advertise/disable',
     method: 'post',
     data: parameter
   })

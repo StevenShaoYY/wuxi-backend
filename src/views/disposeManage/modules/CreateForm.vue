@@ -85,7 +85,7 @@ export default {
             update({
               id: this.dataForm.id,
               configName: this.dataForm.configName,
-              configValue: this.dataForm.configValue
+              configValue: values.configValue
             }).then(res => {
               if (res.code === '200') {
                 this.visible = false

@@ -83,6 +83,7 @@ export default {
         if (!errors) {
           if (this.title === '添加标签') {
             const uploadData = JSON.parse(JSON.stringify(values))
+            uploadData.type = 3
             add(uploadData).then(res => {
               if (res.code === '200') {
                 this.visible = false

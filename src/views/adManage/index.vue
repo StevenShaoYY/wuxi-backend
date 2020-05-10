@@ -18,7 +18,7 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
@@ -167,7 +167,7 @@ export default {
     stop (record) {
       this.$confirm({
         title: '确定禁用该广告吗?',
-        content: `广告标题：${record.title},广告内容:${record.content}，确认禁用吗？`,
+        content: `广告标题：${record.name},广告内容:${record.content}，确认禁用吗？`,
         onOk: () => {
           return new Promise((resolve, reject) => {
             stopUse({
@@ -189,7 +189,7 @@ export default {
     start (record) {
        this.$confirm({
         title: '确定启用该广告吗?',
-        content: `广告标题：${record.title},广告内容:${record.content}，确认启用吗？`,
+        content: `广告标题：${record.name},广告内容:${record.content}，确认启用吗？`,
         onOk: () => {
           return new Promise((resolve, reject) => {
              startUse({
@@ -211,11 +211,11 @@ export default {
     deleteUser (record) {
        this.$confirm({
         title: '删除广告',
-        content: `广告标题：${record.title},广告内容:${record.content}，确认删除吗？`,
+        content: `广告标题：${record.name},广告内容:${record.content}，确认删除吗？`,
         onOk: () => {
           return new Promise((resolve, reject) => {
             DeleteData({
-              id: record.mediaId
+              id: record.id
             }).then(
               res => {
                 if (res.code === '200') {

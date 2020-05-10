@@ -17,7 +17,7 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
@@ -37,8 +37,8 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a v-if="record.status==1" @click="auth(record)">回复</a>
-          <a-divider type="vertical" />
+          <a v-if="!record.reply" @click="auth(record)">回复</a>
+          <a-divider v-if="!record.reply" type="vertical" />
           <a @click="deleteUser(record)">删除</a>
         </template>
       </span>
@@ -126,7 +126,7 @@ export default {
         },
         {
           title: '商品名称',
-          dataIndex: 'procutId'
+          dataIndex: 'goodsName'
         },
         {
           title: '打分',
@@ -194,16 +194,16 @@ export default {
     },
     deleteUser (record) {
        this.$confirm({
-        title: '删除订单',
-        content: `订单编号：${record.serialNumber},订单用户姓名:${record.consigneeName}，确认删除吗？`,
+        title: '删除评论',
+        content: `评论商品名称：${record.goodsName}，确认删除吗？`,
         onOk: () => {
           return new Promise((resolve, reject) => {
             DeleteData({
-              id: record.mediaId
+              id: record.id
             }).then(
               res => {
                 if (res.code === '200') {
-                  this.$message.success('删除订单成功！')
+                  this.$message.success('删除评论成功！')
                   this.$refs.table.refresh()
                   resolve()
                 }

@@ -22,6 +22,7 @@
             >
               <a-input
                 placeholder="请输入商家编号"
+                :disabled="isShowDetail"
                 v-decorator="['merchantSerialNumber', {rules: [{required: true, message: '请输入商家编号！'}]}]" />
             </a-form-item></a-col>
             <a-col :span="12"><a-form-item
@@ -31,6 +32,7 @@
             >
               <a-input
                 placeholder="请输入商品编号"
+                :disabled="isShowDetail"
                 v-decorator="['serialNumber', {rules: [{required: true, message: '请输入商品编号！'}]}]" />
             </a-form-item></a-col>
           </a-row>
@@ -42,6 +44,7 @@
             >
               <a-input
                 placeholder="请输入商品名称"
+                :disabled="isShowDetail"
                 v-decorator="['name', {rules: [{required: true, message: '请输入商品名称！'}]}]" />
             </a-form-item></a-col>
             <a-col :span="12"><a-form-item
@@ -50,9 +53,10 @@
               :wrapperCol="wrapperCol"
             >
               <a-radio-group
+                :disabled="isShowDetail"
                 v-decorator="['isHot',{initialValue:'1'}]">
-                <a-radio value="1">推荐</a-radio>
-                <a-radio value="0">非推荐</a-radio>
+                <a-radio :value="1">推荐</a-radio>
+                <a-radio :value="0">非推荐</a-radio>
               </a-radio-group>
             </a-form-item></a-col>
           </a-row>
@@ -63,9 +67,10 @@
               :wrapperCol="wrapperCol"
             >
               <a-radio-group
+                :disabled="isShowDetail"
                 v-decorator="['isOnSale',{initialValue:'1'}]">
-                <a-radio value="1">在售</a-radio>
-                <a-radio value="0">未售</a-radio>
+                <a-radio :value="1">在售</a-radio>
+                <a-radio :value="0">未售</a-radio>
               </a-radio-group>
             </a-form-item></a-col>
             <a-col :span="12"><a-form-item
@@ -74,6 +79,7 @@
               :wrapperCol="wrapperCol"
             >
               <a-input
+                :disabled="isShowDetail"
                 placeholder="请输入商品单位"
                 v-decorator="['unit', {rules: [{required: true, message: '请输入商品单位！'}]}]" />
             </a-form-item></a-col>
@@ -88,6 +94,7 @@
                 <!--
                 :file-list="fileList" -->
                 <a-upload
+                  :disabled="isShowDetail"
                   v-decorator="[
                     'picUrl',
                     {
@@ -96,7 +103,7 @@
                       rules: [{required: true, message: '请上传商品图片！'}]
                     },
                   ]"
-                  action="http://101.132.194.14/traffic/mall/photo/upload"
+                  action="http://101.132.194.14/traffic/ops/mall/photo/upload"
                   list-type="picture-card"
                   name="photo"
                   @change="handleChange"
@@ -120,6 +127,7 @@
                 <!--
                 :file-list="fileList" -->
                 <a-upload
+                  :disabled="isShowDetail"
                   v-decorator="[
                     'gallery',
                     {
@@ -128,7 +136,7 @@
                       rules: [{required: true, message: '请上传轮播图！'}]
                     },
                   ]"
-                  action="http://101.132.194.14/traffic/mall/photo/upload"
+                  action="http://101.132.194.14/traffic/ops/mall/photo/upload"
                   list-type="picture-card"
                   name="photo"
                   @change="handleChange2"
@@ -148,12 +156,13 @@
               :labelCol="labelCol2"
               :wrapperCol="wrapperCol2"
             > <a-select
+              :disabled="isShowDetail"
               v-decorator="[
                 'categoryId',
                 {rules: [{required: true, message: '请选择商品分类！'}]}]"
               placeholder="请选择商品分类"
             >
-              <a-select-option v-for="(item, index) of categoryList" :key="index" :value="item.value">
+              <a-select-option v-for="(item, index) of categoryList" :key="index" :value="item.id">
                 {{ item.name }}
               </a-select-option>
             </a-select>
@@ -168,16 +177,26 @@
               <div class="keyword">
                 <template v-for="(tag, index) in keywords">
                   <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-                    <a-tag :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+                    <a-tag
+                      :disabled="isShowDetail"
+                      :key="tag"
+                      :closable="index !== 0"
+                      @close="() => handleClose(tag)">
                       {{ `${tag.slice(0, 20)}...` }}
                     </a-tag>
                   </a-tooltip>
-                  <a-tag v-else :key="tag" :closable="index !== 0" @close="() => handleClose(tag)">
+                  <a-tag
+                    v-else
+                    :disabled="isShowDetail"
+                    :key="tag"
+                    :closable="index !== 0"
+                    @close="() => handleClose(tag)">
                     {{ tag }}
                   </a-tag>
                 </template>
                 <a-input
                   v-if="inputVisible"
+                  :disabled="isShowDetail"
                   ref="input"
                   type="text"
                   size="small"
@@ -202,6 +221,7 @@
             >
               <a-input
                 type="textarea"
+                :disabled="isShowDetail"
                 placeholder="请输入商品简介"
                 :rows="3"
                 v-decorator="['brief']" />
@@ -215,6 +235,7 @@
             >
               <a-input
                 type="textarea"
+                :disabled="isShowDetail"
                 placeholder="请输入商品备注"
                 :rows="3"
                 v-decorator="['remark']" />
@@ -229,7 +250,7 @@
               <edit
                 ref="editor"
                 v-model="Editortext"
-                :disabled="allDisabled">
+                :disabled="allDisabled || isShowDetail">
               </edit>
             </a-form-item></a-col>
           </a-row>
@@ -243,6 +264,7 @@
             >
               <a-input
                 placeholder="请输入库存数量"
+                :disabled="isShowDetail"
                 v-decorator="['number', {rules: [{required: true, message: '请输入库存数量！'}]}]" />
             </a-form-item></a-col>
             <a-col :span="12"><a-form-item
@@ -252,9 +274,10 @@
             >
               <a-radio-group
                 @change="intergralChange"
+                :disabled="isShowDetail"
                 v-decorator="['isUseIntegral',{initialValue:'1'}]">
-                <a-radio value="1">是</a-radio>
-                <a-radio value="0">否</a-radio>
+                <a-radio :value="1">是</a-radio>
+                <a-radio :value="0">否</a-radio>
               </a-radio-group>
             </a-form-item></a-col>
           </a-row>
@@ -265,6 +288,7 @@
               :wrapperCol="wrapperCol"
             >
               <a-input
+                :disabled="isShowDetail"
                 placeholder="请输入商品售价"
                 v-decorator="['salePrice', {rules: [{required: true, message: '请输入商品售价！'}]}]" />
             </a-form-item></a-col>
@@ -275,6 +299,7 @@
               :wrapperCol="wrapperCol"
             >
               <a-input
+                :disabled="isShowDetail"
                 placeholder="请输入积分售价"
                 v-decorator="['integralPrice', {rules: [{required: true, message: '请输入积分售价！'}]}]" />
             </a-form-item></a-col>
@@ -289,17 +314,23 @@
               :wrapperCol="wrapperCol2"
             >
               <a-select
+                :disabled="isShowDetail"
                 v-decorator="[
                   'tag']"
                 mode="multiple"
                 placeholder="请选择商品标签"
                 style="width:80%;"
               >
-                <a-select-option v-for="(item, index) of tagList" :key="index" :value="item.value">
-                  {{ item.name }}
+                <a-select-option v-for="(item, index) of tagList" :key="index" :value="item.id">
+                  {{ item.tagName }}
                 </a-select-option>
               </a-select>
-              <a-button style="float:right" type="primary" icon="plus" @click="addTag">
+              <a-button
+                :disabled="isShowDetail"
+                style="float:right"
+                type="primary"
+                icon="plus"
+                @click="addTag">
                 添加
               </a-button>
             </a-form-item>
@@ -308,7 +339,12 @@
           </a-row>
         </a-card>
         <a-card title="商品参数" :bordered="false">
-          <a-button style="float:right" type="primary" icon="plus" @click="addAttribute">
+          <a-button
+            :disabled="isShowDetail"
+            style="float:right"
+            type="primary"
+            icon="plus"
+            @click="addAttribute">
             添加
           </a-button>
           <div class="valueTable">
@@ -322,7 +358,12 @@
               <div class="item">{{ item.attributeName }}</div>
               <div class="item">{{ item.attributeValue }}</div>
               <div class="item2">
-                <a-button style="float:right" type="primary" icon="plus" @click="deleteAttribute(index)">
+                <a-button
+                  :disabled="isShowDetail"
+                  style="float:right"
+                  type="primary"
+                  icon="plus"
+                  @click="deleteAttribute(index)">
                   删除
                 </a-button>
               </div>
@@ -331,6 +372,13 @@
         </a-card>
       </a-form>
     </a-spin>
+    <template slot="footer" >
+      <a-button key="back" v-if="isShowDetail==false" @click="handleCancel">取消</a-button>
+      <a-button key="submit" v-if="isShowDetail==false" type="primary" :loading="confirmLoading" @click="handleSubmit">
+        确定
+      </a-button>
+      <div v-if="isShowDetail==true"></div>
+    </template>
     <create-form3 ref="createModal" @ok="handleOk" />
     <create-form4 ref="createModal2" @ok="handleAttribute" />
   </a-modal>
@@ -389,7 +437,8 @@ export default {
       inputVisible: false,
       isIntegral: 1,
       Editortext: '',
-      allDisabled: false
+      allDisabled: false,
+      isShowDetail: false
     }
   },
   created () {
@@ -403,7 +452,7 @@ export default {
           currentPage: 1,
           pageSize: 1000
       }).then(res => {
-        this.tagList = res.result
+        this.tagList = res.result.content
       })
     },
     getCateList () {
@@ -411,7 +460,7 @@ export default {
           currentPage: 1,
           pageSize: 1000
       }).then(res => {
-        this.categoryList = res.result
+        this.categoryList = res.result.content
       })
     },
     addTag () {
@@ -489,6 +538,50 @@ export default {
       this.visible = true
       this.title = '添加商品'
     },
+    showDetail (val) {
+      this.visible = true
+      this.isShowDetail = true
+      this.title = '编辑商品'
+      this.rid = val.id
+      const galleryList = []
+      for (let i = 0; i < val.gallery.length; i++) {
+        galleryList.push({
+              uid: i * 100 + 1,
+              name: '商品轮播图片',
+              status: 'done',
+              url: val.gallery[i]
+        })
+      }
+      this.keywords = val.keywords
+      this.AttributeList = val.attribute
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          merchantSerialNumber: val.merchantSerialNumber,
+          serialNumber: val.serialNumber,
+          name: val.name,
+          isHot: val.isHot,
+          isOnSale: val.isOnSale,
+          unit: val.unit,
+          categoryId: val.categoryId,
+          brief: val.brief,
+          remark: val.remark,
+          picUrl: [{
+              uid: '-1',
+              name: '商品图片',
+              status: 'done',
+              url: val.picUrl
+            }],
+          gallery: galleryList,
+          isUseIntegral: val.isUseIntegral,
+          number: val.number,
+          salePrice: val.salePrice,
+          integralPrice: val.integralPrice,
+          tag: val.tag,
+          attribute: val.attribute
+        })
+        this.fileListLength = 1
+      }, 100)
+    },
     update (val) {
       this.visible = true
       this.title = '编辑商品'
@@ -542,7 +635,7 @@ export default {
             const uploadData = JSON.parse(JSON.stringify(values))
             uploadData.picUrl = uploadData.picUrl[0].response.result
             uploadData.gallery = []
-            for (const item of uploadData.gallery) {
+            for (const item of values.gallery) {
               uploadData.gallery.push(item.response.result)
             }
             uploadData.keywords = this.keywords
@@ -561,10 +654,10 @@ export default {
             })
           } else {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.picUrl = uploadData.picUrl[0].response.result
+            uploadData.picUrl = uploadData.picUrl[0].url || uploadData.picUrl[0].response.result
             uploadData.gallery = []
-            for (const item of uploadData.gallery) {
-              uploadData.gallery.push(item.response.result)
+            for (const item of values.gallery) {
+              uploadData.gallery.push(item.url || item.response.result)
             }
             uploadData.keywords = this.keywords
             uploadData.attribute = this.AttributeList
@@ -600,6 +693,7 @@ export default {
       this.inputVisible = false
       this.isIntegral = 1
       this.AttributeList = []
+      this.isShowDetail = false
       this.form.resetFields()
     }
   }

@@ -18,7 +18,7 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
@@ -91,7 +91,7 @@ export default {
         },
         {
           title: '父类目名称',
-          dataIndex: 'pid'
+          dataIndex: 'PName'
         },
         {
           title: '类目图标',
@@ -100,7 +100,7 @@ export default {
         },
         {
           title: '类目图片',
-          dataIndex: 'pickUrl',
+          dataIndex: 'picUrl',
           scopedSlots: { customRender: 'img' }
         },
         {
@@ -154,16 +154,16 @@ export default {
     },
     deleteUser (record) {
        this.$confirm({
-        title: '删除商家',
-        content: `商家编号：${record.serialNumber},商家名称:${record.name}，确认删除吗？`,
+        title: '删除类目',
+        content: `类目名称:${record.name}，确认删除吗？`,
         onOk: () => {
           return new Promise((resolve, reject) => {
             DeleteData({
-              id: record.mediaId
+              id: record.id
             }).then(
               res => {
                 if (res.code === '200') {
-                  this.$message.success('删除商家成功！')
+                  this.$message.success('删除类目成功！')
                   this.$refs.table.refresh()
                   resolve()
                 }

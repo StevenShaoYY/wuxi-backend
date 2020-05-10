@@ -49,7 +49,7 @@
                     getValueFromEvent: normFile
                   },
                 ]"
-                action="http://101.132.194.14/traffic/mall/photo/upload"
+                action="http://101.132.194.14/traffic/ops/mall/photo/upload"
                 list-type="picture-card"
                 name="photo"
                 @change="handleChange"
@@ -74,13 +74,13 @@
                 :file-list="fileList" -->
               <a-upload
                 v-decorator="[
-                  'pickUrl',
+                  'picUrl',
                   {
                     valuePropName: 'fileList',
                     getValueFromEvent: normFile
                   },
                 ]"
-                action="http://101.132.194.14/traffic/mall/photo/upload"
+                action="http://101.132.194.14/traffic/ops/mall/photo/upload"
                 list-type="picture-card"
                 name="photo"
                 @change="handleChange2"
@@ -104,7 +104,7 @@
               'pid']"
             placeholder="请选择父类目"
           >
-            <a-select-option v-for="(item, index) of pIdList" :key="index" :value="item.value">
+            <a-select-option v-for="(item, index) of pIdList" :key="index" :value="item.id">
               {{ item.name }}
             </a-select-option>
           </a-select>
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import { add, update } from '@/api/category'
+import { getList, add, update } from '@/api/category'
 import moment from 'moment'
 
 export default {
@@ -149,6 +149,15 @@ export default {
     }
   },
   created () {
+    getList({
+      currentPage: 1,
+      endTime: '',
+      pageSize: 1000,
+      queryKey: '',
+      startTime: ''
+    }).then(res => {
+      this.pIdList = res.result.content
+    })
   },
   methods: {
     moment,
@@ -184,11 +193,11 @@ export default {
               status: 'done',
               url: val.iconUrl
             }],
-          pickUrl: [{
+          picUrl: [{
               uid: '-2',
               name: '图片',
               status: 'done',
-              url: val.pickUrl
+              url: val.picUrl
             }]
         })
         this.fileListLength = 1
@@ -204,7 +213,7 @@ export default {
           if (this.title === '添加类目') {
             const uploadData = JSON.parse(JSON.stringify(values))
             uploadData.iconUrl = uploadData.iconUrl[0].response.result
-            uploadData.pickUrl = uploadData.pickUrl[0].response.result
+            uploadData.picUrl = uploadData.picUrl[0].response.result
             add(uploadData).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -219,8 +228,8 @@ export default {
             })
           } else {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.iconUrl = uploadData.iconUrl[0].response.result
-            uploadData.pickUrl = uploadData.pickUrl[0].response.result
+            uploadData.picUrl = uploadData.picUrl[0].url || uploadData.picUrl[0].response.result
+            uploadData.iconUrl = uploadData.iconUrl[0].url || uploadData.iconUrl[0].response.result
             update(Object.assign(uploadData, {
               id: this.rid
             })).then(res => {
@@ -244,6 +253,8 @@ export default {
     },
     handleCancel () {
       this.visible = false
+      this.fileListLength = 0
+      this.fileListLength2 = 0
       this.form.resetFields()
     }
   }

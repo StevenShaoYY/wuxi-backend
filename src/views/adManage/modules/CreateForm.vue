@@ -50,7 +50,7 @@
                     rules: [{required: true, message: '请上传广告图片！'}]
                   },
                 ]"
-                action="http://101.132.194.14/traffic/mall/photo/upload"
+                action="http://101.132.194.14/traffic/ops/mall/photo/upload"
                 list-type="picture-card"
                 name="photo"
                 @change="handleChange"
@@ -115,7 +115,7 @@
           >
             <a-select
               v-decorator="[
-                'position']"
+                'position',{initialValue:1}]"
               placeholder="请选择广告位置"
             >
               <a-select-option :value="1">
@@ -250,7 +250,6 @@ export default {
             if (values.startTime) { uploadData.startTime = values.startTime.format('YYYY-MM-DD HH:mm:ss') }
             if (values.endTime) { uploadData.endTime = values.endTime.format('YYYY-MM-DD HH:mm:ss') }
             uploadData.picUrl = uploadData.picUrl[0].response.result
-            console.log(888, uploadData)
             add(uploadData).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -265,9 +264,10 @@ export default {
             })
           } else {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.startTime = uploadData.startTime.format('YYYY-MM-DD HH:mm:ss')
-            uploadData.endTime = uploadData.endTime.format('YYYY-MM-DD HH:mm:ss')
-            console.log(uploadData)
+            uploadData.startTime = values.startTime.format('YYYY-MM-DD HH:mm:ss')
+            uploadData.endTime = values.endTime.format('YYYY-MM-DD HH:mm:ss')
+            uploadData.picUrl = uploadData.picUrl[0].url || uploadData.picUrl[0].response.result
+            console.log(888, uploadData)
             update(Object.assign(uploadData, {
               id: this.rid
             })).then(res => {
@@ -293,6 +293,7 @@ export default {
       this.visible = false
       this.startValue = ''
       this.endValue = ''
+      this.fileListLength = 0
       this.form.resetFields()
     }
   }

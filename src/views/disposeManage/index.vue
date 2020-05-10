@@ -15,10 +15,10 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
-      showPagination="auto"
+      :showPagination="false"
       :pagination="paginationT"
     >
       <span slot="action" slot-scope="text, record">
@@ -74,7 +74,6 @@ export default {
         {
           title: '配置值',
           dataIndex: 'configValue'
-
         },
         {
           title: '创建时间',

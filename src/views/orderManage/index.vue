@@ -17,7 +17,7 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
@@ -37,9 +37,9 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a v-if="record.status==1" @click="auth(record)">审核</a>
-          <a-divider type="vertical" />
-          <a @click="deleteUser(record)">删除</a>
+          <a v-if="record.afterStatus==2" @click="auth(record)">审核</a>
+          <a-divider v-if="record.afterStatus==2" type="vertical" />
+          <a v-if="record.orderStatus==4" @click="deleteUser(record)">删除</a>
         </template>
       </span>
     </s-table>
@@ -51,7 +51,7 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
-import { getList, DeleteData } from '@/api/shop'
+import { getList, DeleteData } from '@/api/order'
 
 const statusMap = {
   1: {
@@ -126,7 +126,7 @@ export default {
         },
         {
           title: '商品名称',
-          dataIndex: 'orderGoods[goodsName]'
+          dataIndex: 'orderGoods[0].goodsName'
         },
         {
           title: '订单状态',
@@ -197,7 +197,7 @@ export default {
         onOk: () => {
           return new Promise((resolve, reject) => {
             DeleteData({
-              id: record.mediaId
+              id: record.id
             }).then(
               res => {
                 if (res.code === '200') {

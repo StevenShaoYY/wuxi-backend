@@ -18,7 +18,7 @@
       ref="table"
       style="margin-top:20px;"
       size="default"
-      rowKey="mediaId"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       showPagination="auto"
@@ -59,6 +59,10 @@ const statusMap = {
   2: {
     status: 'processing',
     text: '商家标签'
+  },
+  3: {
+    status: 'processing',
+    text: '商品标签'
   }
 }
 export default {
@@ -87,7 +91,7 @@ export default {
         },
         {
           title: '标签名称',
-          dataIndex: 'name'
+          dataIndex: 'tagName'
         },
         {
           title: '商家编号',
@@ -146,7 +150,7 @@ export default {
         onOk: () => {
           return new Promise((resolve, reject) => {
             DeleteData({
-              id: record.mediaId
+              id: record.id
             }).then(
               res => {
                 if (res.code === '200') {
