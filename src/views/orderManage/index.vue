@@ -23,6 +23,9 @@
       showPagination="auto"
       :pagination="paginationT"
     >
+      <span slot="id" slot-scope="text, record">
+        <span style="cursor: pointer;color:blue" @click="showDetail(record)">{{ text }}</span>
+      </span>
       <span slot="status" slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
@@ -114,7 +117,8 @@ export default {
       columns: [
         {
           title: '订单编号',
-          dataIndex: 'serialNumber'
+          dataIndex: 'serialNumber',
+          scopedSlots: { customRender: 'id' }
         },
         {
           title: '用户姓名',
@@ -184,6 +188,9 @@ export default {
   created () {
   },
   methods: {
+    showDetail (val) {
+      this.$refs.createModal.showDetail(val)
+    },
     add () {
       this.$refs.createModal.add()
     },

@@ -141,7 +141,7 @@
                   name="photo"
                   @change="handleChange2"
                 >
-                  <div v-if="fileListLength2 < 5">
+                  <div v-if="fileListLength2 < 15">
                     <a-icon type="plus" />
                     <div class="ant-upload-text">
                       上传图片
@@ -320,6 +320,7 @@
                 mode="multiple"
                 placeholder="请选择商品标签"
                 style="width:80%;"
+                @change="changeTag($event)"
               >
                 <a-select-option v-for="(item, index) of tagList" :key="index" :value="item.id">
                   {{ item.tagName }}
@@ -447,6 +448,9 @@ export default {
   },
   methods: {
     moment,
+    changeTag (val) {
+      console.log(val)
+    },
     getTagList () {
       getList({
           currentPage: 1,
@@ -555,6 +559,10 @@ export default {
       this.keywords = val.keywords
       this.AttributeList = val.attribute
       setTimeout(() => {
+        const TagStrList = []
+        for (const item of val.tag) {
+          TagStrList.push(item.id)
+        }
         this.form.setFieldsValue({
           merchantSerialNumber: val.merchantSerialNumber,
           serialNumber: val.serialNumber,
@@ -576,7 +584,7 @@ export default {
           number: val.number,
           salePrice: val.salePrice,
           integralPrice: val.integralPrice,
-          tag: val.tag,
+          tag: TagStrList,
           attribute: val.attribute
         })
         this.fileListLength = 1
@@ -598,6 +606,10 @@ export default {
       this.keywords = val.keywords
       this.AttributeList = val.attribute
       setTimeout(() => {
+        const TagStrList = []
+        for (const item of val.tag) {
+          TagStrList.push(item.id)
+        }
         this.form.setFieldsValue({
           merchantSerialNumber: val.merchantSerialNumber,
           serialNumber: val.serialNumber,
@@ -619,11 +631,11 @@ export default {
           number: val.number,
           salePrice: val.salePrice,
           integralPrice: val.integralPrice,
-          tag: val.tag,
+          tag: TagStrList,
           attribute: val.attribute
         })
         this.fileListLength = 1
-      }, 100)
+      }, 200)
     },
     handleSubmit () {
       const { form: { validateFields } } = this
@@ -633,13 +645,22 @@ export default {
         if (!errors) {
           if (this.title === '添加商品') {
             const uploadData = JSON.parse(JSON.stringify(values))
+            uploadData.tag = []
+            for (const item of values.tag) {
+              uploadData.tag.push({
+                id: item
+              })
+            }
             uploadData.picUrl = uploadData.picUrl[0].response.result
             uploadData.gallery = []
             for (const item of values.gallery) {
               uploadData.gallery.push(item.response.result)
             }
+            uploadData.gallery = JSON.stringify(uploadData.gallery)
             uploadData.keywords = this.keywords
+            uploadData.keywords = JSON.stringify(uploadData.keywords)
             uploadData.attribute = this.AttributeList
+            // uploadData.attribute = JSON.stringify(uploadData.attribute)
             add(uploadData).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -659,8 +680,17 @@ export default {
             for (const item of values.gallery) {
               uploadData.gallery.push(item.url || item.response.result)
             }
+            uploadData.tag = []
+            for (const item of values.tag) {
+              uploadData.tag.push({
+                id: item
+              })
+            }
+            uploadData.gallery = JSON.stringify(uploadData.gallery)
             uploadData.keywords = this.keywords
+            uploadData.keywords = JSON.stringify(uploadData.keywords)
             uploadData.attribute = this.AttributeList
+            // uploadData.attribute = JSON.stringify(uploadData.attribute)
             update(Object.assign(uploadData, {
               id: this.rid
             })).then(res => {

@@ -83,7 +83,7 @@
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
 import CreateForm2 from './modules/CreateForm2'
-import { getSingle, disableSingle, enableSingle, deleteSingle } from '@/api/huiyuan'
+import { getSingle, disableSingle, enableSingle, deleteSingle, exportHuiyuan } from '@/api/huiyuan'
 
 const statusMap = {
   0: {
@@ -230,7 +230,33 @@ export default {
   },
   methods: {
     exportInfo () {
-
+       const page = {
+          currentPage: 1,
+          pageSize: 15,
+          type: 2,
+          sortField: 'authTime',
+          sortOrder: 'ascend'
+        }
+      exportHuiyuan(Object.assign(page, this.queryParam)).then(res => {
+          console.log(res)
+          const blob = new Blob([res.toString()], {
+          type: 'application/vnd.ms-excel;charset=utf-8'
+        })
+        console.log(blob)
+        const fileName = Date.parse(new Date()) + '.xlsx'
+        if (window.navigator.msSaveOrOpenBlob) {
+          // console.log(2)
+          navigator.msSaveBlob(blob, fileName)
+        } else {
+          // console.log(3)
+          var link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = fileName
+          link.click()
+          // 释放内存
+          window.URL.revokeObjectURL(link.href)
+        }
+      })
     },
     showDetail (val) {
       this.$refs.createModal.showDetail(val)

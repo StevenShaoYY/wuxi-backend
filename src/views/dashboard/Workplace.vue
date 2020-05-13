@@ -79,6 +79,50 @@
           </a-card>
         </a-col>
       </a-row>
+      <a-row :gutter="24">
+        <a-col
+          style="padding: 0 12px"
+          :xl="15"
+          :lg="24"
+          :md="24"
+          :sm="24"
+          :xs="24">
+          <a-card title="订单统计" style="margin-bottom: 24px" :loading="radarLoading2" :bordered="false" :body-style="{ padding: 0 }">
+            <div style="width:100%;height:300px;">
+              <zhuzhuang
+                v-if="radarLoading2==false"
+                class="marginTop10"
+                width="525"
+                height="280"
+                :nameList="searchUserScale2"
+                :dataList="homeChartData2"></zhuzhuang>
+
+            </div>
+          </a-card>
+        </a-col>
+        <a-col
+          style="padding: 0 12px"
+          :xl="9"
+          :lg="24"
+          :md="24"
+          :sm="24"
+          :xs="24">
+          <a-card title="销售排行" style="margin-bottom: 24px" :loading="radarLoading" :bordered="false" :body-style="{ padding: 0 }">
+            <div class="indexContainer" style="width:100%;height:300px;">
+              <div
+                class="indexList"
+                v-for="(item,index) of homeChartData3"
+                :key="index">
+                <span style="flex:0 0 20px">{{ index+1 }}.</span>
+                <span style="flex:1">{{ item.name }}</span>
+                <span style="flex:0 0 80px">{{ item.value }}</span>
+
+              </div>
+            </div>
+
+          </a-card>
+        </a-col>
+      </a-row>
     </div>
   </page-view>
 </template>
@@ -90,16 +134,19 @@ import { mapState } from 'vuex'
 import { PageView } from '@/layouts'
 import HeadInfo from '@/components/tools/HeadInfo'
 import zhexianChart from '@/components/zhexianChart'
-import { getHome1, getHome2 } from '@/api/home'
+import zhuzhuang from '@/components/zhuzhuang'
+import { getHome1, getHome2, getHome3, getHome4 } from '@/api/home'
 // import { Chart } from '@antv/g2'
 // const DataSet = require('@antv/data-set')
 const searchUserScale = ['会员数', '日期']
+const searchUserScale2 = ['订单数', '日期']
 export default {
   name: 'Workplace',
   components: {
     PageView,
     HeadInfo,
-    zhexianChart
+    zhexianChart,
+    zhuzhuang
   },
   data () {
     return {
@@ -107,10 +154,14 @@ export default {
       avatar: '',
       user: {},
       searchUserScale,
+      searchUserScale2,
       loading: true,
       radarLoading: true,
+      radarLoading2: true,
       homeData: {},
       homeChartData: {},
+      homeChartData2: [],
+      homeChartData3: {},
       chart: {}
     }
   },
@@ -138,6 +189,17 @@ export default {
         res.result.xValue,
         res.result.yValue
       ]
+      this.radarLoading = false
+    })
+    getHome3({}).then(res => {
+      this.homeChartData2 = [
+        res.result.xValue,
+        res.result.yValue
+      ]
+      this.radarLoading2 = false
+    })
+      getHome4({}).then(res => {
+      this.homeChartData3 = res.result
       this.radarLoading = false
     })
   },
@@ -275,6 +337,15 @@ export default {
     .headerContent .title .welcome-text {
       display: none;
     }
-  }
 
+  }
+.indexContainer{
+      height: 300px;
+      overflow-y: auto;
+    }
+    .indexList{
+      display: flex;
+      line-height: 40px;
+      padding: 0 20px;
+    }
 </style>
