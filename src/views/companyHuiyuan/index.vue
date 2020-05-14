@@ -19,7 +19,7 @@
             />
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal2.add()" v-action:MADD>添加成员</a-button>
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:CADD>添加会员</a-button>
-            <a-button style="float:right;margin-left:10px;" type="primary" @click="exportInfo" v-action:MADD>导出信息</a-button>
+            <a-button style="float:right;margin-left:10px;" type="primary" @click="exportInfo">导出信息</a-button>
           </a-col>
           <!-- <a-col :md="7" :sm="24">
             <a-button style="float:right;margin-left:10px;" type="primary" @click="$refs.createModal.add()" v-action:MADD>添加单位成员</a-button>
@@ -230,32 +230,20 @@ export default {
   },
   methods: {
     exportInfo () {
-       const page = {
+      const page = {
           currentPage: 1,
           pageSize: 15,
           type: 2,
           sortField: 'authTime',
           sortOrder: 'ascend'
-        }
+      }
       exportHuiyuan(Object.assign(page, this.queryParam)).then(res => {
-          console.log(res)
-          const blob = new Blob([res.toString()], {
-          type: 'application/vnd.ms-excel;charset=utf-8'
-        })
-        console.log(blob)
-        const fileName = Date.parse(new Date()) + '.xlsx'
-        if (window.navigator.msSaveOrOpenBlob) {
-          // console.log(2)
-          navigator.msSaveBlob(blob, fileName)
-        } else {
-          // console.log(3)
-          var link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = fileName
-          link.click()
-          // 释放内存
-          window.URL.revokeObjectURL(link.href)
-        }
+          // console.log(99999999, res)
+          const down = document.createElement('a')
+          down.href = res.result
+          document.body.appendChild(down)
+          down.click()
+          down.remove()
       })
     },
     showDetail (val) {

@@ -120,11 +120,8 @@ export function read (parameter) {
 
 export function exportHuiyuan (parameter) {
   return axios({
-    url: '/member/export',
+    url: '/member/exportUrl',
     method: 'post',
-    headers: {
-      'response-Type': 'arraybuffer'
-    },
     data: parameter
   })
 }

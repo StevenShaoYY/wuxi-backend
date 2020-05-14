@@ -9,7 +9,7 @@
             <a-range-picker style="margin-left: 16px; width: 272px;" @change="onChange" />
           </a-col>
           <a-col :md="4" :sm="24">
-            <a-button style="float:right" type="primary" icon="plus" @click="add()">添加商品</a-button>
+            <a-button style="float:right" type="primary" icon="plus" @click="add()" v-action:GOODSADD>添加商品</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -44,12 +44,12 @@
       <span slot="action" slot-scope="text, record">
         <template>
           <a @click="update(record)">编辑</a>
-          <a-divider type="vertical" />
+          <a-divider type="vertical" v-if="record.authStatus==1 || (record.authStatus==3&&record.isOnSale==1) || (record.authStatus==3&&record.isOnSale==0)"/>
           <a v-if="record.authStatus==1" @click="auth(record)">审核</a>
           <a v-if="record.authStatus==3&&record.isOnSale==1" @click="stop(record)">下架</a>
           <a v-if="record.authStatus==3&&record.isOnSale==0" @click="start(record)">上架</a>
-          <a-divider type="vertical" />
-          <a @click="deleteUser(record)">删除</a>
+          <a-divider type="vertical" v-action:GOODSDELETE />
+          <a @click="deleteUser(record)" v-action:GOODSDELETE>删除</a>
         </template>
       </span>
     </s-table>

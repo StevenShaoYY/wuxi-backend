@@ -3,7 +3,7 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="21" :sm="24">
+          <a-col :md="18" :sm="24">
             <a-input-search placeholder="搜索编号、姓名、手机号码" style="width:250px;float:left;margin-left: 16px;" @search="onSearch"/>
             <span style="float:left;margin-top:5px;margin-left: 16px;">开通日期：</span>
             <a-range-picker
@@ -18,8 +18,9 @@
               @change="onChangeEnd"
             />
           </a-col>
-          <a-col :md="3" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-button style="float:right" type="primary" icon="plus" @click="$refs.createModal.add()">添加会员</a-button>
+            <a-button style="float:right;margin-right:10px;" type="primary" @click="exportInfo">导出信息</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -61,7 +62,7 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
-import { getSingle, disableSingle, enableSingle, deleteSingle } from '@/api/huiyuan'
+import { getSingle, disableSingle, enableSingle, deleteSingle, exportHuiyuan } from '@/api/huiyuan'
 
 const statusMap = {
   0: {
@@ -175,6 +176,23 @@ export default {
   created () {
   },
   methods: {
+    exportInfo () {
+      const page = {
+          currentPage: 1,
+          pageSize: 15,
+          type: 2,
+          sortField: 'authTime',
+          sortOrder: 'ascend'
+      }
+      exportHuiyuan(Object.assign(page, this.queryParam)).then(res => {
+          // console.log(99999999, res)
+          const down = document.createElement('a')
+          down.href = res.result
+          document.body.appendChild(down)
+          down.click()
+          down.remove()
+      })
+    },
     showDetail (val) {
       this.$refs.createModal.showDetail(val)
     },

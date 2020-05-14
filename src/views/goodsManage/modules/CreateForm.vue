@@ -386,7 +386,7 @@
 </template>
 
 <script>
-import { add, update } from '@/api/shop'
+import { add, update } from '@/api/goods'
 // import { uploadPic } from '@/api/upload'
 import { getList } from '@/api/tag'
 import { getCategoryList } from '@/api/category'
@@ -545,19 +545,22 @@ export default {
     showDetail (val) {
       this.visible = true
       this.isShowDetail = true
-      this.title = '编辑商品'
+      this.title = '查看商品'
       this.rid = val.id
       const galleryList = []
-      for (let i = 0; i < val.gallery.length; i++) {
+      const gallery = JSON.parse(val.gallery)
+      for (let i = 0; i < gallery.length; i++) {
         galleryList.push({
               uid: i * 100 + 1,
               name: '商品轮播图片',
               status: 'done',
-              url: val.gallery[i]
+              url: gallery[i]
         })
       }
-      this.keywords = val.keywords
+      const keywords = JSON.parse(val.keywords)
+      this.keywords = keywords
       this.AttributeList = val.attribute
+      this.Editortext = val.detail
       setTimeout(() => {
         const TagStrList = []
         for (const item of val.tag) {
@@ -584,32 +587,34 @@ export default {
           number: val.number,
           salePrice: val.salePrice,
           integralPrice: val.integralPrice,
-          tag: TagStrList,
-          attribute: val.attribute
+          tag: TagStrList
         })
         this.fileListLength = 1
-      }, 100)
+      }, 1000)
     },
     update (val) {
       this.visible = true
       this.title = '编辑商品'
       this.rid = val.id
       const galleryList = []
-      for (let i = 0; i < val.gallery.length; i++) {
+      const gallery = JSON.parse(val.gallery)
+      for (let i = 0; i < gallery.length; i++) {
         galleryList.push({
               uid: i * 100 + 1,
               name: '商品轮播图片',
               status: 'done',
-              url: val.gallery[i]
+              url: gallery[i]
         })
       }
-      this.keywords = val.keywords
+      const TagStrList = []
+      for (const item of val.tag) {
+        TagStrList.push(item.id)
+      }
+      const keywords = JSON.parse(val.keywords)
+      this.keywords = keywords
       this.AttributeList = val.attribute
+      this.Editortext = val.detail
       setTimeout(() => {
-        const TagStrList = []
-        for (const item of val.tag) {
-          TagStrList.push(item.id)
-        }
         this.form.setFieldsValue({
           merchantSerialNumber: val.merchantSerialNumber,
           serialNumber: val.serialNumber,
@@ -631,11 +636,10 @@ export default {
           number: val.number,
           salePrice: val.salePrice,
           integralPrice: val.integralPrice,
-          tag: TagStrList,
-          attribute: val.attribute
+          tag: TagStrList
         })
         this.fileListLength = 1
-      }, 200)
+      }, 1000)
     },
     handleSubmit () {
       const { form: { validateFields } } = this
@@ -660,6 +664,7 @@ export default {
             uploadData.keywords = this.keywords
             uploadData.keywords = JSON.stringify(uploadData.keywords)
             uploadData.attribute = this.AttributeList
+            uploadData.detail = this.Editortext
             // uploadData.attribute = JSON.stringify(uploadData.attribute)
             add(uploadData).then(res => {
               if (res.code === '200') {
@@ -690,6 +695,7 @@ export default {
             uploadData.keywords = this.keywords
             uploadData.keywords = JSON.stringify(uploadData.keywords)
             uploadData.attribute = this.AttributeList
+            uploadData.detail = this.Editortext
             // uploadData.attribute = JSON.stringify(uploadData.attribute)
             update(Object.assign(uploadData, {
               id: this.rid
@@ -719,6 +725,7 @@ export default {
       this.fileListLength2 = 0
       this.categoryList = []
       this.tagList = []
+      this.Editortext = ''
       this.keyWordInput = ''
       this.inputVisible = false
       this.isIntegral = 1
