@@ -20,7 +20,7 @@
           {{ dataList.createTime }}
         </a-descriptions-item>
         <a-descriptions-item label="更新时间">
-          {{ dataList.createTime }}
+          {{ dataList.updateTime }}
         </a-descriptions-item>
       </a-descriptions>
       <a-descriptions title="用户信息">

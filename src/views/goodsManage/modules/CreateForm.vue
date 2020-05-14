@@ -443,8 +443,6 @@ export default {
     }
   },
   created () {
-    this.getTagList()
-    this.getCateList()
   },
   methods: {
     moment,
@@ -539,10 +537,14 @@ export default {
       }
     },
     add () {
+      this.getTagList()
+      this.getCateList()
       this.visible = true
       this.title = '添加商品'
     },
     showDetail (val) {
+      this.getTagList()
+      this.getCateList()
       this.visible = true
       this.isShowDetail = true
       this.title = '查看商品'
@@ -590,9 +592,11 @@ export default {
           tag: TagStrList
         })
         this.fileListLength = 1
-      }, 1000)
+      }, 200)
     },
     update (val) {
+      this.getTagList()
+      this.getCateList()
       this.visible = true
       this.title = '编辑商品'
       this.rid = val.id
@@ -639,7 +643,7 @@ export default {
           tag: TagStrList
         })
         this.fileListLength = 1
-      }, 1000)
+      }, 200)
     },
     handleSubmit () {
       const { form: { validateFields } } = this
