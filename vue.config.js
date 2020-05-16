@@ -28,6 +28,7 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
+  publicPath: '/traffic/back/',
   configureWebpack: {
     // webpack plugins
     plugins: [

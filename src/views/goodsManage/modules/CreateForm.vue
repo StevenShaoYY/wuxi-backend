@@ -2,8 +2,8 @@
   <a-modal
     :title="title"
     width="100%"
-    height="100"
-    style="top: 0px;"
+    height="101"
+    style="top: 0px;bottom:0px;"
     :bodyStyle="bdStyle"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -207,9 +207,8 @@
                   @keyup.enter="handleInputConfirm"
                 />
                 <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-                  <a-icon type="plus" /> New Tag
+                  新增标签<a-icon type="plus" />
                 </a-tag>
-              </div>
               </div>
             </a-form-item></a-col>
           </a-row>
@@ -405,7 +404,7 @@ export default {
     return {
       bdStyle: {
         overflow: 'auto',
-        height: 'calc(100vh - 120px)'
+        height: 'calc(100vh - 110px)'
       },
       labelCol: {
         xs: { span: 24 },
@@ -741,6 +740,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.ant-modal-wrap{
+  overflow: hidden;
+}
   .line{
     border-top: 1px solid #E8E8E8;
   }

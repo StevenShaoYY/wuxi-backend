@@ -44,6 +44,13 @@ export const asyncRouterMap = [
                             import('@/views/huiyuan/index'),
                         meta: { title: '个人会员', keepAlive: true, permission: ['MEMBER:PERSON'] }
                     },
+                    // {
+                    //     path: '/huiyuan/singleDetail',
+                    //     name: 'singleDetail',
+                    //     component: () =>
+                    //         import('@/views/huiyuan/indexDetail'),
+                    //     meta: { title: '个人会员信息', keepAlive: true, permission: ['MEMBER:PERSON'] }
+                    // },
                     {
                         path: '/huiyuan/company',
                         name: 'company',

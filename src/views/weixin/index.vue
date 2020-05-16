@@ -28,7 +28,9 @@
         <a target="_blank" :href="text.url">{{ text.title }}</a>
       </span>
       <span slot="status" slot-scope="text">
-        <img style="width:160px;height:90px;" :src="'http://101.132.194.14/traffic/ops/weixin/getImage?imageUrl='+text" alt="">
+        <div style="width:160px;height:90px;">
+          <img style="width:160px;height:90px;" :src="'http://101.132.194.14/traffic/ops/weixin/getImage?imageUrl='+text" alt="">
+        </div>
       </span>
       <span slot="action" slot-scope="text, record">
         <template>

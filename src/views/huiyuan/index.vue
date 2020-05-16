@@ -55,6 +55,7 @@
       </span>
     </s-table>
     <create-form ref="createModal" @ok="handleOk" />
+    <create-form-watch ref="createModal2" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -62,6 +63,7 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
+import CreateFormWatch from './modules/CreateFormWatch'
 import { getSingle, disableSingle, enableSingle, deleteSingle, exportHuiyuan } from '@/api/huiyuan'
 
 const statusMap = {
@@ -80,7 +82,8 @@ export default {
   components: {
     STable,
     Ellipsis,
-    CreateForm
+    CreateForm,
+    CreateFormWatch
   },
   data () {
     return {
@@ -194,7 +197,14 @@ export default {
       })
     },
     showDetail (val) {
-      this.$refs.createModal.showDetail(val)
+      // this.$router.push({
+      //   path: 'singleDetail',
+      //   query: {
+      //     val: JSON.stringify(val)
+      //   }
+      // })
+      // this.$refs.createModal.showDetail(val)
+      this.$refs.createModal2.showDetail(val)
     },
     onChangeStart (val, dateString) {
       this.queryParam.authTimeStart = dateString[0]

@@ -69,7 +69,7 @@ export default {
       columns: [
         {
           title: '配置名称',
-          dataIndex: 'configName'
+          dataIndex: 'displayName'
         },
         {
           title: '配置值',

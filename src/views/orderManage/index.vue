@@ -36,7 +36,9 @@
         <span>{{ text | positionFilter }}</span>
       </span>
       <span slot="img" slot-scope="text">
-        <img style="width:160px;height:90px;" :src="text" alt="">
+        <div style="width:160px;height:90px;">
+          <img style="width:160px;height:90px;" :src="text" alt="">
+        </div>
       </span>
       <span slot="action" slot-scope="text, record">
         <template>

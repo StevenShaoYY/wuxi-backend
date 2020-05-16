@@ -83,7 +83,7 @@ export default {
       // 表头
       columns: [
         {
-          title: '反馈编号',
+          title: '预约编号',
           dataIndex: 'serialNumber'
         },
         {
@@ -99,7 +99,7 @@ export default {
           dataIndex: 'certificateNumber'
         },
         {
-          title: '反馈意见',
+          title: '预约内容',
           dataIndex: 'content'
         },
         {

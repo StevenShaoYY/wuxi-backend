@@ -35,11 +35,11 @@
         </a-descriptions-item>
       </a-descriptions>
       <a-descriptions title="商品信息">
-        <a-descriptions-item label="商品编号">
+        <a-descriptions-item label="商品编号" v-if="dataList.orderGoods">
           {{ dataList.orderGoods[0].goodsSerialNumber }}
         </a-descriptions-item>
-        <a-descriptions-item label="商品名称">
-          {{ dataList.orderGoods[0].goodsName }}
+        <a-descriptions-item label="商品名称" v-if="dataList.orderGoods">
+          {{ dataList.orderGoods[0].goodsName || '' }}
         </a-descriptions-item>
         <a-descriptions-item label="商品价格">
           {{ dataList.goodsPrice }}
@@ -148,16 +148,36 @@ export default {
   },
   filters: {
     statusFilter (type) {
-      return statusMap[type].text
+      if (type === undefined) {
+        return ''
+      }
+      if (statusMap[type]) {
+        return statusMap[type].text
+      } else {
+        return ''
+      }
     },
     statusTypeFilter (type) {
-      return statusMap[type].status
+      console.log(2222222)
+      if (statusMap[type]) {
+        return statusMap[type].status
+      } else {
+        return ''
+      }
     },
     paystatusFilter (type) {
-      return paystatusMap[type].text
+      if (statusMap[type]) {
+        return paystatusMap[type].text
+      } else {
+        return ''
+      }
     },
     paystatusTypeFilter (type) {
-      return paystatusMap[type].status
+       if (statusMap[type]) {
+        return paystatusMap[type].status
+      } else {
+        return ''
+      }
     }
   },
   methods: {

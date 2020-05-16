@@ -91,7 +91,7 @@ export default {
         },
         {
           title: '父类目名称',
-          dataIndex: 'PName'
+          dataIndex: 'pName'
         },
         {
           title: '类目图标',

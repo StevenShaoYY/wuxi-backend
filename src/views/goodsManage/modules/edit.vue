@@ -33,7 +33,7 @@ export default {
     // 即abc.com/tinymce，baseUrl需要配置成tinymce，不然发布后资源会找不到
     baseUrl: {
       type: String,
-      default: ''
+      default: process.env.VUE_APP_TINYMCE
     },
     disabled: {
       type: Boolean,

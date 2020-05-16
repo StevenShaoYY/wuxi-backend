@@ -39,13 +39,15 @@
         <span>{{ text | isHotFilter }}</span>
       </span>
       <span slot="img" slot-scope="text">
-        <img style="width:160px;height:90px;" :src="text" alt="">
+        <div style="width:160px;height:90px;">
+          <img style="width:160px;height:90px;" :src="text" alt="">
+        </div>
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
           <a @click="update(record)">编辑</a>
-          <a-divider type="vertical" v-if="record.authStatus==1 || (record.authStatus==3&&record.isOnSale==1) || (record.authStatus==3&&record.isOnSale==0)"/>
-          <a v-if="record.authStatus==1" @click="auth(record)">审核</a>
+          <a-divider type="vertical" v-if="record.authStatus==1 || record.authStatus==2 ||(record.authStatus==3&&record.isOnSale==1) || (record.authStatus==3&&record.isOnSale==0)"/>
+          <a v-if="record.authStatus==1||record.authStatus==2" @click="auth(record)">审核</a>
           <a v-if="record.authStatus==3&&record.isOnSale==1" @click="stop(record)">下架</a>
           <a v-if="record.authStatus==3&&record.isOnSale==0" @click="start(record)">上架</a>
           <a-divider type="vertical" v-action:GOODSDELETE />

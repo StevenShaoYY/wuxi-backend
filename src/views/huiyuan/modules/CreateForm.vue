@@ -9,7 +9,7 @@
     :maskClosable="false"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
+      <a-form :form="form" ref="print">
         <a-row :gutter="24">
           <a-col :span="12"><a-form-item
             label="姓名"
@@ -236,7 +236,8 @@
       <a-button key="submit" v-if="!disable" type="primary" :loading="confirmLoading" @click="handleSubmit">
         确定
       </a-button>
-      <div v-if="disable"></div>
+      <div v-if="disable">
+      </div>
     </template>
   </a-modal>
 </template>
@@ -285,6 +286,9 @@ export default {
     })
   },
   methods: {
+    handlePrint () {
+      this.$print(this.$refs.print)
+    },
     IDCardCheck (rule, value, callbackFn) {
       if (value && !this.checkIDCard(value)) {
         callbackFn('请输入正确的身份证号码！')

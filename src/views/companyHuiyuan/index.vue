@@ -75,6 +75,8 @@
     </s-table>
     <create-form ref="createModal" @ok="handleOk" />
     <create-form2 ref="createModal2" @ok="handleOk" />
+    <create-form-watch ref="createModal3" @ok="handleOk" />
+    <create-form-watch2 ref="createModal4" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -83,6 +85,8 @@
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
 import CreateForm2 from './modules/CreateForm2'
+import CreateFormWatch from './modules/CreateFormWatch'
+import CreateFormWatch2 from './modules/CreateFormWatch2'
 import { getSingle, disableSingle, enableSingle, deleteSingle, exportHuiyuan } from '@/api/huiyuan'
 
 const statusMap = {
@@ -120,7 +124,9 @@ export default {
     STable,
     Ellipsis,
     CreateForm,
-    CreateForm2
+    CreateForm2,
+    CreateFormWatch,
+    CreateFormWatch2
   },
   data () {
     return {
@@ -247,7 +253,12 @@ export default {
       })
     },
     showDetail (val) {
-      this.$refs.createModal.showDetail(val)
+      if (val.type === 2) {
+        this.$refs.createModal4.showDetail(val)
+      } else {
+        this.$refs.createModal3.showDetail(val)
+      }
+      // this.$refs.createModal.showDetail(val)
     },
     onSearch (val) {
       this.queryParam.queryKey = val

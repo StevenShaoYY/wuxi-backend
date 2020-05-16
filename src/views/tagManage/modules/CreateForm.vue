@@ -17,10 +17,11 @@
             :wrapperCol="wrapperCol2"
           >
             <a-radio-group
+              @change="changeRd"
               v-decorator="['type',{initialValue:1}]">
               <a-radio :value="1">系统标签</a-radio>
               <a-radio :value="2">商家标签</a-radio>
-              <a-radio :value="3">商品标签</a-radio>
+              <!-- <a-radio :value="3">商品标签</a-radio> -->
             </a-radio-group>
           </a-form-item></a-col>
         </a-row>
@@ -35,7 +36,7 @@
               v-decorator="['tagName', {rules: [{required: true, message: '请输入标签名称！'}]}]" />
           </a-form-item></a-col>
         </a-row>
-        <a-row :gutter="24">
+        <a-row :gutter="24" v-if="rd==2">
           <a-col :span="24"><a-form-item
             label="商家编号"
             :labelCol="labelCol2"
@@ -77,12 +78,16 @@ export default {
       confirmLoading: false,
       form: this.$form.createForm(this),
       title: '添加标签',
-      rid: ''
+      rid: '',
+      rd: '1'
     }
   },
   created () {
   },
   methods: {
+    changeRd (val) {
+      this.rd = val.target.value
+    },
     add () {
       this.visible = true
       this.title = '添加标签'
