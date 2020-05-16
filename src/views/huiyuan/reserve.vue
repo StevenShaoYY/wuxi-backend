@@ -108,6 +108,10 @@ export default {
           dataIndex: 'content'
         },
         {
+          title: '回复内容',
+          dataIndex: 'reply'
+        },
+        {
           title: '阅读状态',
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' }

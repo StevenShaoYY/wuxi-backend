@@ -70,7 +70,7 @@ export default {
       visible: false,
       confirmLoading: false,
       form: this.$form.createForm(this),
-      title: '评论回复',
+      title: '反馈回复',
       rid: '',
       replayData: {}
     }
@@ -81,7 +81,7 @@ export default {
     moment,
     update (val) {
       this.visible = true
-      this.title = '评论回复'
+      this.title = '反馈回复'
       this.rid = val.id
       this.replayData = val
     },

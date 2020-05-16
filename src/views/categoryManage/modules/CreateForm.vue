@@ -212,8 +212,12 @@ export default {
         if (!errors) {
           if (this.title === '添加类目') {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.iconUrl = uploadData.iconUrl[0].response.result
-            uploadData.picUrl = uploadData.picUrl[0].response.result
+            if (uploadData.iconUrl) {
+              uploadData.iconUrl = uploadData.iconUrl[0].response.result
+            }
+            if (uploadData.picUrl) {
+              uploadData.picUrl = uploadData.picUrl[0].response.result
+            }
             add(uploadData).then(res => {
               if (res.code === '200') {
                 this.visible = false
@@ -228,8 +232,12 @@ export default {
             })
           } else {
             const uploadData = JSON.parse(JSON.stringify(values))
-            uploadData.picUrl = uploadData.picUrl[0].url || uploadData.picUrl[0].response.result
-            uploadData.iconUrl = uploadData.iconUrl[0].url || uploadData.iconUrl[0].response.result
+            if (uploadData.iconUrl) {
+              uploadData.iconUrl = uploadData.iconUrl[0].url || uploadData.iconUrl[0].response.result
+            }
+            if (uploadData.picUrl) {
+              uploadData.picUrl = uploadData.picUrl[0].url || uploadData.picUrl[0].response.result
+            }
             update(Object.assign(uploadData, {
               id: this.rid
             })).then(res => {
