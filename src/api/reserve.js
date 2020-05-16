@@ -23,3 +23,11 @@ export function read (parameter) {
     data: parameter
   })
 }
+
+export function reply (parameter) {
+  return axios({
+    url: '/reserve/reply',
+    method: 'post',
+    data: parameter
+  })
+}

@@ -92,7 +92,7 @@
             <a-input
               placeholder="请输入职务"
               :disabled="disable"
-              v-decorator="['companyduty', {rules: [{required: true, message: '请输入职务！'}]}]" />
+              v-decorator="['companyDuty', {rules: [{required: true, message: '请输入职务！'}]}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
@@ -426,7 +426,8 @@ export default {
           email: val.authInfo.email,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
-          remark: val.remark
+          remark: val.remark,
+          vipType: val.type
         })
       }, 100)
     },

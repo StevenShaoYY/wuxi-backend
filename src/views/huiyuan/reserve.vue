@@ -40,12 +40,15 @@
       <span slot="action" slot-scope="text, record">
         <template>
           <a v-if="record.status==0" @click="stop(record)">已读</a>
+          <a-divider v-if="!record.reply" type="vertical" />
+          <a v-if="!record.reply" @click="replay(record)">回复</a>
           <!-- <a-divider v-if="record.status==0" type="vertical"/> -->
           <a v-else @click="deleteR(record)">删除</a>
         </template>
       </span>
     </s-table>
     <create-form ref="createModal" @ok="handleOk" />
+    <create-form2 ref="createModal2" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -53,6 +56,7 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
+import CreateForm2 from './modules/CreateFormReplay'
 import { replyList, replyDelete, read } from '@/api/reserve'
 
 const statusMap = {
@@ -71,7 +75,8 @@ export default {
   components: {
     STable,
     Ellipsis,
-    CreateForm
+    CreateForm,
+    CreateForm2
   },
   data () {
     return {
@@ -150,6 +155,9 @@ export default {
   created () {
   },
   methods: {
+    replay (record) {
+      this.$refs.createModal2.update(record)
+    },
     readStatesChange (val) {
       this.readStatus = val
       this.$refs.table.refresh(true)

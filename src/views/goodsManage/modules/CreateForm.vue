@@ -208,7 +208,7 @@
                   @keyup.enter="handleInputConfirm"
                 />
                 <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-                  新增标签<a-icon type="plus" />
+                  新增关键字<a-icon type="plus" />
                 </a-tag>
               </div>
             </a-form-item></a-col>

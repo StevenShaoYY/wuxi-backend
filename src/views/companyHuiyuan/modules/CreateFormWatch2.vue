@@ -30,7 +30,7 @@
           {{ data.authInfo.companyLegalPersonCertificateNumber }}
         </a-descriptions-item>
         <a-descriptions-item label="职务" >
-          {{ data.authInfo.companyduty }}
+          {{ data.authInfo.companyDuty }}
         </a-descriptions-item>
         <a-descriptions-item label="经办人" :span="2">
           {{ data.authInfo.companyChargelPerson }}

@@ -347,7 +347,8 @@ export default {
           companyDuty: val.authInfo.companyDuty,
           companyGradle: val.authInfo.companyGradle,
           invoiceNumber: val.invoiceNumber,
-          remark: val.remark
+          remark: val.remark,
+          vipType: val.type
         })
       }, 100)
     },
