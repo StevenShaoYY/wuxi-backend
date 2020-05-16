@@ -40,10 +40,10 @@
       <span slot="action" slot-scope="text, record">
         <template>
           <a v-if="record.status==0" @click="stop(record)">已读</a>
+          <a v-else @click="deleteR(record)">删除</a>
           <a-divider v-if="!record.reply" type="vertical" />
           <a v-if="!record.reply" @click="replay(record)">回复</a>
           <!-- <a-divider v-if="record.status==0" type="vertical"/> -->
-          <a v-else @click="deleteR(record)">删除</a>
         </template>
       </span>
     </s-table>
@@ -177,8 +177,8 @@ export default {
     },
     stop (record) {
       this.$confirm({
-        title: '已读反馈',
-        content: '确定已读该会反馈吗？',
+        title: '已读预约',
+        content: '确定已读该预约吗？',
         onOk: () => {
           return new Promise((resolve, reject) => {
             read({
@@ -186,7 +186,7 @@ export default {
             }).then(
               res => {
                 if (res.code === '200') {
-                  this.$message.success('已读反馈成功！')
+                  this.$message.success('已读预约成功！')
                   this.$refs.table.refresh()
                   resolve()
                 }
@@ -199,8 +199,8 @@ export default {
     },
     deleteR (record) {
        this.$confirm({
-        title: '确定删除该反馈意见吗?',
-        content: '删除后将不保存该反馈意见，确认删除吗？',
+        title: '确定删除该预约吗?',
+        content: '删除后将不保存该预约，确认删除吗？',
         onOk: () => {
           return new Promise((resolve, reject) => {
             replyDelete({
@@ -208,7 +208,7 @@ export default {
             }).then(
               res => {
                 if (res.code === '200') {
-                  this.$message.success('删除反馈意见成功！')
+                  this.$message.success('删除预约成功！')
                   this.$refs.table.refresh()
                   resolve()
                 }
