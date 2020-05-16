@@ -3,6 +3,7 @@
     :title="title"
     width="100%"
     height="101"
+    class="good-dialog"
     style="top: 0px;bottom:0px;"
     :bodyStyle="bdStyle"
     :visible="visible"
@@ -377,7 +378,9 @@
       <a-button key="submit" v-if="isShowDetail==false" type="primary" :loading="confirmLoading" @click="handleSubmit">
         确定
       </a-button>
-      <div v-if="isShowDetail==true"></div>
+      <div v-if="isShowDetail==true">
+        <a-button key="back" @click="handleCancel">取消</a-button>
+      </div>
     </template>
     <create-form3 ref="createModal" @ok="handleOk" />
     <create-form4 ref="createModal2" @ok="handleAttribute" />
