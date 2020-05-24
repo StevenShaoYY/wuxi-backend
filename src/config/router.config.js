@@ -148,6 +148,13 @@ export const asyncRouterMap = [
                         component: () =>
                             import('@/views/weixin/index'),
                         meta: { title: '图文管理', keepAlive: true, permission: ['WECHAT:NEWS'] }
+                    },
+                    {
+                        path: '/weixinMenu',
+                        name: 'weixinMenu',
+                        component: () =>
+                            import('@/views/weixinMenu/index'),
+                        meta: { title: '菜单管理', keepAlive: true, permission: ['WECHAT:MENU'] }
                     }
                 ]
             },

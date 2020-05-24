@@ -55,6 +55,42 @@
                   </div>
                 </a-card>
               </a-card-grid>
+              <a-card-grid class="project-card-grid">
+                <a-card :bordered="false" :body-style="{ padding: 0 }" @click="$router.push('/mall/list/goodsManage')">
+                  <a-card-meta>
+                    <div slot="title" class="card-title">
+                      <!-- <a-avatar size="small" :src="item.cover"/> -->
+                      <a-icon class="icon-a" type="mail" />
+                      <a>待审核商品</a>
+                    </div>
+                    <div slot="description" class="card-description">
+                      待审核商品{{ homeData.goodsCount }}个
+                    </div>
+                  </a-card-meta>
+                  <div class="project-item">
+                    <a>快速前往></a>
+                    <!-- <span class="datetime">9小时前</span> -->
+                  </div>
+                </a-card>
+              </a-card-grid>
+              <a-card-grid class="project-card-grid">
+                <a-card :bordered="false" :body-style="{ padding: 0 }" @click="$router.push('/huiyuan/reserve')">
+                  <a-card-meta>
+                    <div slot="title" class="card-title">
+                      <!-- <a-avatar size="small" :src="item.cover"/> -->
+                      <a-icon class="icon-a" type="mail" />
+                      <a>预约服务</a>
+                    </div>
+                    <div slot="description" class="card-description">
+                      预约服务{{ homeData.reserveCount }}个
+                    </div>
+                  </a-card-meta>
+                  <div class="project-item">
+                    <a>快速前往></a>
+                    <!-- <span class="datetime">9小时前</span> -->
+                  </div>
+                </a-card>
+              </a-card-grid>
             </div>
           </a-card>
         </a-col>
@@ -221,7 +257,7 @@ export default {
 <style lang="less" scoped>
   .project-list {
     .project-card-grid {
-      width: 100%;
+      width: 50%;
       cursor: pointer;
     }
     .icon-a{
@@ -345,7 +381,7 @@ export default {
     }
     .indexList{
       display: flex;
-      line-height: 40px;
+      line-height: 29px;
       padding: 0 20px;
     }
 </style>

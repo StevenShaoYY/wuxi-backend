@@ -3,12 +3,34 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="20" :sm="24">
+          <a-col :md="22" :sm="24">
             <a-input-search placeholder="搜索商品编号、名称" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
             <a-input-search placeholder="商家编号搜索" style="margin-left: 16px; width: 272px;" @search="onSearchShangjia"/>
             <a-range-picker style="margin-left: 16px; width: 272px;" @change="onChange" />
+            <a-select
+              placeholder="请选择审核状态"
+              v-model="authStatus"
+              style="margin-left: 16px; width: 272px;"
+              @change="onSearchStatus"
+            >
+              <a-select-option value="">
+                全部
+              </a-select-option>
+              <a-select-option :value="1">
+                未审核
+              </a-select-option>
+              <a-select-option :value="2">
+                审核中
+              </a-select-option>
+              <a-select-option :value="3">
+                审核通过
+              </a-select-option>
+              <a-select-option :value="4">
+                审核失败
+              </a-select-option>
+            </a-select>
           </a-col>
-          <a-col :md="4" :sm="24">
+          <a-col :md="2" :sm="24">
             <a-button style="float:right" type="primary" icon="plus" @click="add()" v-action:GOODSADD>添加商品</a-button>
           </a-col>
         </a-row>
@@ -112,6 +134,7 @@ export default {
   },
   data () {
     return {
+      authStatus: '',
       paginationT: {
         pageSizeOptions: ['10', '20']
       },
@@ -175,6 +198,7 @@ export default {
           pageSize: parameter.pageSize,
           queryKey: this.queryParam,
           serialNumber: this.serialNumber,
+          authStatus: this.authStatus,
           startTime: this.startTime,
           endTime: this.endTime
         }).then(res => {
@@ -205,6 +229,9 @@ export default {
   methods: {
     showDetail (val) {
       this.$refs.createModal.showDetail(val)
+    },
+    onSearchStatus () {
+      this.$refs.table.refresh(true)
     },
     add () {
       this.$refs.createModal.add()

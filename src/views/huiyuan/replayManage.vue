@@ -3,8 +3,25 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="20" :sm="24">
-            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
+          <a-col :md="6" :sm="5">
+            <a-input-search placeholder="搜索编号、姓名、手机号码" style="margin-left: 16px; width: 100%;" @search="onSearch"/>
+          </a-col>
+          <a-col :md="5" :sm="5">
+            <a-select
+              placeholder="请选择阅读状态"
+              v-model="status"
+              @change="onSearchStatus"
+            >
+              <a-select-option :value="0">
+                未读
+              </a-select-option>
+              <a-select-option :value="1">
+                已读
+              </a-select-option>
+              <a-select-option :value="2">
+                全部
+              </a-select-option>
+            </a-select>
           </a-col>
           <!-- <a-col :md="4" :sm="24">
             <a-button type="primary" icon="plus" @click="$refs.createModal.add()">添加会员</a-button>
@@ -73,6 +90,7 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: '',
+      status: 2,
       // 表头
       columns: [
         {
@@ -125,10 +143,11 @@ export default {
           pageSize: parameter.pageSize,
           sortField: parameter.sortField,
           sortOrder: parameter.sortOrder,
-          queryKey: this.queryParam
+          queryKey: this.queryParam,
+          status: this.status
         }).then(res => {
-            return res.result
-          })
+          return res.result
+        })
       },
       selectedRowKeys: [],
       selectedRows: []
@@ -151,6 +170,9 @@ export default {
     onSearch (val) {
       console.log(val)
       this.queryParam = val
+      this.$refs.table.refresh(true)
+    },
+    onSearchStatus () {
       this.$refs.table.refresh(true)
     },
     handleEdit (record) {
