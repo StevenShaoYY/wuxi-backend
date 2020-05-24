@@ -68,6 +68,28 @@
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
+          <a-col :span="12"><a-form-item
+            label="经度"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          >
+            <a-input
+              :disabled="isShowDetail"
+              placeholder="请输入经度"
+              v-decorator="['longitude']" />
+          </a-form-item></a-col>
+          <a-col :span="12"><a-form-item
+            label="纬度"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          >
+            <a-input
+              :disabled="isShowDetail"
+              placeholder="请输入纬度"
+              v-decorator="['latitude']" />
+          </a-form-item></a-col>
+        </a-row>
+        <a-row :gutter="24">
           <a-col :span="24">
             <a-form-item
               label="封面"
@@ -210,6 +232,8 @@ export default {
           address: val.address,
           phoneNumber: val.phoneNumber,
           sortOrder: val.sortOrder,
+          latitude: val.latitude,
+          longitude: val.longitude,
           cover: [{
               uid: '-1',
               name: '商家封面图',
@@ -234,6 +258,8 @@ export default {
           address: val.address,
           phoneNumber: val.phoneNumber,
           sortOrder: val.sortOrder,
+          latitude: val.latitude,
+          longitude: val.longitude,
           cover: [{
               uid: '-1',
               name: '商家封面图',
