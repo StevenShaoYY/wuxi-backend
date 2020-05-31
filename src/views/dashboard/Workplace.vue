@@ -56,7 +56,7 @@
                 </a-card>
               </a-card-grid>
               <a-card-grid class="project-card-grid">
-                <a-card :bordered="false" :body-style="{ padding: 0 }" @click="$router.push('/mall/list/goodsManage')">
+                <a-card :bordered="false" :body-style="{ padding: 0 }" @click="$router.push('/mall/list/goodsManage?id=2')">
                   <a-card-meta>
                     <div slot="title" class="card-title">
                       <!-- <a-avatar size="small" :src="item.cover"/> -->

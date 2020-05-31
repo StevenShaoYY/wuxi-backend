@@ -66,6 +66,13 @@ export const asyncRouterMap = [
                         meta: { title: '认证管理', keepAlive: true, permission: ['MEMBER:AUTH'] }
                     },
                     {
+                        path: '/huiyuan/statisticBill',
+                        name: 'statisticBill',
+                        component: () =>
+                            import('@/views/statisticBill/index'),
+                        meta: { title: '会费统计', keepAlive: true, permission: ['MEMBER:BILL'] }
+                    },
+                    {
                         path: '/huiyuan/reply',
                         name: 'reply',
                         component: () =>

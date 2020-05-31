@@ -225,6 +225,16 @@ export default {
     }
   },
   created () {
+    if (this.$route.query.id === '2') {
+      this.authStatus = 1
+    }
+  },
+  mounted () {
+    console.log(888)
+    if (this.$route.query.id === '2') {
+      this.authStatus = 1
+      this.$refs.table.refresh(true)
+    }
   },
   methods: {
     showDetail (val) {

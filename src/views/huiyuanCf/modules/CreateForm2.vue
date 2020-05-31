@@ -71,19 +71,28 @@
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
-          <a-col :span="24"><a-form-item
+          <a-col :span="12"><a-form-item
             label="法定代表人身份证号码"
-            :labelCol="labelCol2"
-            :wrapperCol="wrapperCol2"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
           >
             <a-input
               placeholder="请输入法人身份证号码"
               :disabled="disable"
-              :rows="3"
               v-decorator="['companyLegalPersonCertificateNumber', {rules: [
                 {required: true, message: '请输入法人身份证号码！'},
                 {validator:IDCardCheck}
               ]}]" />
+          </a-form-item></a-col>
+          <a-col :span="12"><a-form-item
+            label="职务"
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+          >
+            <a-input
+              placeholder="请输入职务"
+              :disabled="disable"
+              v-decorator="['companyDuty', {rules: [{required: true, message: '请输入职务！'}]}]" />
           </a-form-item></a-col>
         </a-row>
         <a-row :gutter="24">
@@ -400,6 +409,7 @@ export default {
           companyLegalPersonPhone: val.authInfo.companyLegalPersonPhone,
           companyChargelPerson: val.authInfo.companyChargelPerson,
           companyChargelPersonPhone: val.authInfo.companyChargelPersonPhone,
+          companyDuty: val.authInfo.companyDuty,
           companyLegalPersonCertificateNumber: val.authInfo.companyLegalPersonCertificateNumber,
           businessScope: val.authInfo.businessScope,
           registeredCapital: val.authInfo.registeredCapital,

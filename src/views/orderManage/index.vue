@@ -44,6 +44,8 @@
         <template>
           <a v-if="record.afterStatus==2" @click="auth(record)">审核</a>
           <a-divider v-if="record.afterStatus==2" type="vertical" />
+          <a v-if="record.payStatus==2 && record.orderStatus==4" v-action:REFUND @click="tuikuan(record)">退款</a>
+          <a-divider v-if="record.orderStatus==4" v-action:REFUND type="vertical" />
           <a v-if="record.orderStatus==4" @click="deleteUser(record)">删除</a>
         </template>
       </span>
@@ -56,7 +58,7 @@
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import CreateForm from './modules/CreateForm'
-import { getList, DeleteData } from '@/api/order'
+import { getList, DeleteData, refund } from '@/api/order'
 
 const statusMap = {
   1: {
@@ -145,6 +147,10 @@ export default {
           scopedSlots: { customRender: 'paystatus' }
         },
         {
+          title: '支付金额',
+          dataIndex: 'actualPrice'
+        },
+        {
           title: '创建时间',
           dataIndex: 'createTime'
         },
@@ -198,6 +204,28 @@ export default {
     },
     auth (record) {
       this.$refs.createModal.update(record)
+    },
+    tuikuan (record) {
+       this.$confirm({
+        title: '退款',
+        content: `订单编号：${record.serialNumber},订单用户姓名:${record.consigneeName}，确认退款吗？`,
+        onOk: () => {
+          return new Promise((resolve, reject) => {
+            refund({
+              id: record.id
+            }).then(
+              res => {
+                if (res.code === '200') {
+                  this.$message.success('订单退款成功！')
+                  this.$refs.table.refresh()
+                  resolve()
+                }
+              }
+            )
+          }).catch(() => console.log('Oops errors!'))
+        },
+        onCancel () {}
+      })
     },
     deleteUser (record) {
        this.$confirm({

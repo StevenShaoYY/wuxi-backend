@@ -24,6 +24,14 @@ export function auth (parameter) {
   })
 }
 
+export function refund (parameter) {
+  return axios({
+    url: '/mall/order/refund',
+    method: 'post',
+    data: parameter
+  })
+}
+
 export function detail (parameter) {
   return axios({
     url: '/order/info',

@@ -4,15 +4,16 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="24" :sm="24">
-            <a-input-search placeholder="搜索编号、姓名、手机号码" style="float:left;width:250px;margin-left: 16px;" @search="onSearch"/>
-            <span style="float:left;margin-top:5px;margin-left: 16px;">认证状态</span>
-            <a-select defaultValue="2" style="float:left;width:120px;margin-left:15px;" @change="handleChange">
-              <a-select-option value="">全部</a-select-option>
-              <a-select-option value="2">已支付</a-select-option>
-              <a-select-option value="6">已审核</a-select-option>
-              <a-select-option value="7">已退款</a-select-option>
+            <a-input-search placeholder="搜索编号、名称" style="float:left;width:250px;margin-left: 16px;" @search="onSearch"/>
+            <span style="float:left;margin-top:5px;margin-left: 16px;">会员分类</span>
+            <a-select defaultValue="0" style="float:left;width:120px;margin-left:15px;" @change="handleChange">
+              <a-select-option value="0">全部</a-select-option>
+              <a-select-option value="1">普通会员</a-select-option>
+              <a-select-option value="2">单位会员</a-select-option>
+              <a-select-option value="3">理事会员</a-select-option>
+              <a-select-option value="4">会长、副会长会员</a-select-option>
             </a-select>
-            <span style="float:left;margin-top:5px;margin-left: 16px;">提交日期</span>
+            <span style="float:left;margin-top:5px;margin-left: 16px;">账单日期</span>
             <a-range-picker
               format="YYYY-MM-DD"
               style="float:left;width:200px;margin-left:15px;"
@@ -20,6 +21,14 @@
             />
           </a-col>
         </a-row>
+        <div class="sta">
+          <div class="sta-item">
+            会员数：{{ sta.memberCount }}
+          </div>
+          <div class="sta-item">
+            总计金额：{{ sta.billAmount }}
+          </div>
+        </div>
       </a-form>
     </div>
 
@@ -43,29 +52,19 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a v-if="record.authStatus==2" @click="handleEdit(record)">认证</a>
-          <a-divider v-if="record.authStatus==2 || record.authStatus==6" type="vertical" />
-          <a v-if="record.authStatus==2 || record.authStatus==6" @click="handleReturn(record)">退款</a>
-          <a-divider v-if="record.authStatus==7" type="vertical" v-action:DELETE />
-          <a v-if="record.authStatus==7" v-action:DELETE @click="deleteUser(record)">删除</a>
+          <a v-action:DELETE @click="deleteUser(record)">删除</a>
         </template>
       </span>
     </s-table>
-    <create-form1 ref="createModal1" @ok="handleOk" />
-    <create-form2 ref="createModal2" @ok="handleOk" />
-    <create-form-watch ref="createModal3" @ok="handleOk" />
-    <create-form-watch2 ref="createModal4" @ok="handleOk" />
+    <create-form-watch ref="createModal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 // import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import CreateForm1 from './modules/CreateForm1'
-import CreateForm2 from './modules/CreateForm2'
-import { getAuthList, deleteAuth, returnFund } from '@/api/huiyuan'
+import { getList, statisticBill, DeleteData } from '@/api/statisticBill'
 import CreateFormWatch from './modules/CreateFormWatch'
-import CreateFormWatch2 from './modules/CreateFormWatch2'
 
 const statusMap = {
   1: {
@@ -117,10 +116,7 @@ export default {
   components: {
     STable,
     Ellipsis,
-    CreateForm1,
-    CreateForm2,
-    CreateFormWatch,
-    CreateFormWatch2
+    CreateFormWatch
   },
   data () {
     return {
@@ -129,50 +125,27 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {
-        authStatus: 2
+        vipType: 0
       },
+      sta: {},
       // 表头
       columns: [
         {
-          title: '认证编号',
+          title: '账单编号',
           dataIndex: 'serialNumber',
           scopedSlots: { customRender: 'id' }
         },
         {
-          title: '姓名',
-          dataIndex: 'authInfo.name'
+          title: '账单名称',
+          dataIndex: 'name'
         },
         {
-          title: '手机号码',
-          dataIndex: 'authInfo.phoneNumber'
+          title: '账单金额',
+          dataIndex: 'amount'
         },
         {
-          title: '身份证号码',
-          dataIndex: 'authInfo.certificateNumber'
-        },
-        {
-          title: '认证类型',
-          dataIndex: 'authType',
-          scopedSlots: { customRender: 'huiyuanType' }
-        },
-        {
-          title: '认证状态',
-          dataIndex: 'authStatus',
-          scopedSlots: { customRender: 'status' }
-        },
-        {
-          title: '会员年费',
-          dataIndex: 'annualFee'
-        },
-        {
-          title: '提交日期',
-          dataIndex: 'createTime',
-          sorter: true
-        },
-        {
-          title: '认证日期',
-          dataIndex: 'authTime',
-          sorter: true
+          title: '账单日期',
+          dataIndex: 'createTime'
         },
         {
           title: '操作',
@@ -189,7 +162,7 @@ export default {
           sortField: parameter.sortField,
           sortOrder: parameter.sortOrder
         }
-        return getAuthList(Object.assign(page, this.queryParam)).then(res => {
+        return getList(Object.assign(page, this.queryParam)).then(res => {
             for (const item of res.result.content) {
               if (item.authType === 2) {
                 item.authInfo.name = item.authInfo.companyLegalPerson
@@ -216,22 +189,26 @@ export default {
     }
   },
   created () {
+    this.getSta()
   },
   methods: {
+    getSta () {
+      statisticBill(this.queryParam).then(res => {
+        this.sta = res.result
+      })
+    },
     showDetail (val) {
-      if (val.authType === 1) {
-        this.$refs.createModal3.showDetail(val)
-      } else {
-        this.$refs.createModal4.showDetail(val)
-      }
+        this.$refs.createModal.showDetail(val)
     },
     handleChange (val) {
-      this.queryParam.authStatus = val
+      this.queryParam.vipType = val
+      this.getSta()
       this.$refs.table.refresh(true)
     },
     onChangeStart (val, dateString) {
-      this.queryParam.commitTimeStart = dateString[0]
-      this.queryParam.commitTimeEnd = dateString[1]
+      this.queryParam.startTime = dateString[0]
+      this.queryParam.endTime = dateString[1]
+      this.getSta()
       this.$refs.table.refresh(true)
     },
     onSearch (val) {
@@ -245,45 +222,20 @@ export default {
         this.$refs.createModal2.update(record)
       }
     },
-    handleReturn (record) {
-       this.$confirm({
-        title: '确定退款吗?',
-        content: '退回该会员认证费用吗？',
-        onOk: () => {
-          return new Promise((resolve, reject) => {
-            returnFund({
-              id: record.id
-            }).then(
-              res => {
-                if (res.code === '200') {
-                  this.$message.success('退款成功！')
-                  this.$refs.table.refresh()
-                  resolve()
-                } else {
-                  this.$message.error(res.message)
-                  this.$refs.table.refresh()
-                  resolve()
-                }
-              }
-            )
-          }).catch(() => console.log('Oops errors!'))
-        },
-        onCancel () {}
-      })
-    },
     deleteUser (record) {
        this.$confirm({
-        title: '确定删除该认证数据吗?',
-        content: '删除后将不保存该认证数据，确认删除吗？',
+        title: '确定删除该账单数据吗?',
+        content: '删除后将不保存该账单数据，确认删除吗？',
         onOk: () => {
           return new Promise((resolve, reject) => {
-            deleteAuth({
+            DeleteData({
               id: record.id
             }).then(
               res => {
                 if (res.code === '200') {
-                  this.$message.success('删除认证数据成功！')
+                  this.$message.success('删除账单数据成功！')
                   this.$refs.table.refresh()
+                  this.getSta()
                   resolve()
                 }
               }
@@ -299,3 +251,14 @@ export default {
   }
 }
 </script>
+<style lang="less">
+  .sta{
+    display: flex;
+    margin-top: 15px;
+    margin-left: 16px;
+    .sta-item{
+      border: 1px solid #ccc;
+      padding: 5px 20px;
+    }
+  }
+</style>

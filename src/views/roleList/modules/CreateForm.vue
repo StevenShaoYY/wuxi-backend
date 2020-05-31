@@ -166,18 +166,20 @@ export default {
     },
     add () {
       this.visible = true
-      this.title = '新增管理员'
+      this.title = '新增角色'
     },
     update (val) {
       this.visible = true
-      this.title = '编辑管理员'
+      this.title = '编辑角色'
       this.rid = val.id
       setTimeout(() => {
         this.form.setFieldsValue({
           name: val.name,
           remark: val.remark
         })
-        this.value = val.modules
+        this.value = {
+          checked: val.modules
+        }
       }, 100)
     },
     handleSubmit () {
@@ -185,12 +187,13 @@ export default {
       this.confirmLoading = true
       validateFields((errors, values) => {
         if (!errors) {
+          console.log(9999, this.value)
           if (this.value.checked.length === 0) {
             this.$message.error('请先选择角色功能权限！')
             this.confirmLoading = false
             return
           }
-          if (this.title === '新增管理员') {
+          if (this.title === '新增角色') {
             addRole(Object.assign(values, { modules: this.value.checked })).then(res => {
               if (res.code === '200') {
                 this.visible = false
