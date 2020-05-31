@@ -692,6 +692,9 @@ export default {
               uploadData.gallery.push(item.url || item.response.result)
             }
             uploadData.tag = []
+            if (typeof (values.tag) === 'undefined') {
+              values.tag = []
+            }
             for (const item of values.tag) {
               uploadData.tag.push({
                 id: item
