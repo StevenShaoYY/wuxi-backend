@@ -69,5 +69,10 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/ant-design-pro-vue"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
