@@ -4,7 +4,7 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="20" :sm="24">
-            <a-input-search placeholder="搜索类目名称:" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
+            <a-input-search placeholder="搜索类目名称" style="margin-left: 16px; width: 272px;" @search="onSearch"/>
             <a-range-picker style="margin-left: 16px; width: 272px;" @change="onChange" />
           </a-col>
           <a-col :md="4" :sm="24">
