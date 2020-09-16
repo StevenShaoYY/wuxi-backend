@@ -8,7 +8,7 @@
             <a-range-picker style="margin-left: 16px; width: 272px;" @change="onChange" />
           </a-col>
           <a-col :md="4" :sm="24">
-            <a-button style="float:right" type="primary" icon="plus" @click="add()">添加类目</a-button>
+            <a-button1 style="float:right" type="primary" icon="plus" @click="add()">添加类目</a-button>
           </a-col>
         </a-row>
       </a-form>
